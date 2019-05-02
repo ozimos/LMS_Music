@@ -19,7 +19,9 @@
         "fzaninotto/faker": "^1.4",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^3.0",
-        "phpunit/phpunit": "^7.5"
+        "phpunit/phpunit": "^7.5",
+        "symplify/coding-standard": "^5.4",
+        "symplify/easy-coding-standard": "^5.4"
     },
     "config": {
         "optimize-autoloader": true,
@@ -57,6 +59,11 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ]
+        ],
+        "test" : [
+            "vendor/bin/phpunit"
+        ],
+        "test-one": ["vendor/bin/phpunit --filter"],
+        "lint" : ["vendor/bin/ecs check app --fix"]
     }
 }
