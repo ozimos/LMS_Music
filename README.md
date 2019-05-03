@@ -1,3 +1,5 @@
+[![Test Coverage](https://api.codeclimate.com/v1/badges/4d72d83213b6d9ea71e0/test_coverage)](https://codeclimate.com/github/ozimos/LMS_Music/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/4d72d83213b6d9ea71e0/maintainability)](https://codeclimate.com/github/ozimos/LMS_Music/maintainability)
 
 The Music App Store API has the following features
 * Authentication

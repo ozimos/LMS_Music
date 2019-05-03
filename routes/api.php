@@ -16,3 +16,14 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::prefix('api/v1')
+    ->group(function () {
+        Route::get('artistes/search', 'ArtistesController@search');
+        Route::get('comments/search', 'CommentsController@search');
+        Route::get('profiles/search', 'ProfilesController@search');
+        Route::apiResources([
+            'artistes' => 'ArtistesController',
+            'comments' => 'CommentsController',
+            'profiles' => 'ProfilesController',
+        ]);
+    });
