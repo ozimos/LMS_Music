@@ -1,0 +1,10 @@
+version: "2"
+exclude_patterns:
+- "config/"
+- "**/node_modules/"
+- "**/vendor/"
+- "**/tests/"
+- "**/__mocks__/"
+- "**/__tests__/"
+- "**/*.spec.php"
+- "storage/*"

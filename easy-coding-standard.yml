@@ -10,7 +10,7 @@ parameters:
         - "bootstrap/*"
         - "database/*"
         - "*/node_modules/*"
-        - "*/vendor/*"
+        - "vendor/*"
         - "*/tests/**/Example*.php"
         - "app/**/Kernel.php"
         - "app/**/Handler.php"
@@ -25,3 +25,9 @@ parameters:
     skip:
         SlamCsFixer\FinalInternalClassFixer: ~
             - "app/Providers/*"
+        Symplify\CodingStandard\Sniffs\Architecture\DuplicatedClassShortNameSniff: ~
+            - "vendor/*"
+        Symplify\CodingStandard\Sniffs\Naming\InterfaceNameSniff: ~
+            - "app/Contracts/Repositories/*"
+        Symplify\CodingStandard\Sniffs\Naming\ClassNameSuffixByParentSniff: ~
+            - "app/Repositories/*"
