@@ -16,11 +16,8 @@ trait CrudMethodsTrait
     public function index()
     {
         $this->repository->pushCriteria(app(RequestCriteria::class));
-        $model = $this->repository->all();
-        return response()->json([
-            'data' => $model,
-            'count' => count($model)
-        ]);
+        $models = $this->repository->all();
+        return $this->respondWithCollection($models);
     }
 
     /**
@@ -34,12 +31,7 @@ trait CrudMethodsTrait
     protected function storeFromFormCreateRequest(FormRequest $formRequest)
     {
         $model = $this->repository->create($formRequest->all());
-
-        $response = [
-            'message' => 'Model created.',
-            'data'    => $model->toArray(),
-        ];
-        return response()->json($response, 201);
+        return $this->respondWithItem($model)->response()->setStatusCode(201);
     }
 
     /**
@@ -52,9 +44,7 @@ trait CrudMethodsTrait
     public function show($id)
     {
         $model = $this->repository->find($id);
-        return response()->json([
-            'data' => $model,
-        ]);
+        return $this->respondWithItem($model);
     }
 
     /**
@@ -68,9 +58,7 @@ trait CrudMethodsTrait
         $value = request()->query('value');
 
         $model = $this->repository->findByField($field, $value);
-        return response()->json([
-            'data' => $model,
-        ]);
+        return $this->respondWithItem($model);
     }
 
     /**
@@ -85,13 +73,7 @@ trait CrudMethodsTrait
     protected function updateFromFormUpdateRequest(FormRequest $formRequest, $id)
     {
         $model = $this->repository->update($formRequest->all(), $id);
-
-        $response = [
-            'message' => 'Model updated.',
-            'data'    => $model->toArray(),
-        ];
-
-        return response()->json($response);
+        return $this->respondWithItem($model);
     }
 
 

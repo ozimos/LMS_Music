@@ -8,28 +8,31 @@ use Illuminate\Database\Migrations\Migration;
  */
 class CreateSongsTable extends Migration
 {
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
-		Schema::create('songs', function(Blueprint $table) {
-            $table->increments('id');
-			$table->photo('');
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create(
+            'songs', function (Blueprint $table) {
+                $table->increments('id');
 
-            $table->timestamps();
-		});
-	}
+                $table->string('title');
+                $table->text('description')->nullable();
+                $table->date('release_date')->nullable();
+            }
+        );
+    }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		Schema::drop('songs');
-	}
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('songs');
+    }
 }

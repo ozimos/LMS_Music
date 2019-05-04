@@ -6,29 +6,31 @@ use App\Http\Requests\CommentCreateRequest;
 use App\Http\Requests\CommentUpdateRequest;
 use App\Contracts\Repositories\CommentRepository;
 use Illuminate\Http\JsonResponse;
+use App\Http\Resources\Comment;
+use App\Contracts\ResponseInterface;
 
 /**
  * Class CommentsController.
  *
  * @package namespace App\Http\Controllers;
  */
-class CommentsController extends Controller
+final class CommentsController extends Controller implements ResponseInterface
 {
     use CrudMethodsTrait;
 
     /**
      * @var CommentRepository
      */
-    protected $commentRepository;
+    protected $repository;
 
     /**
      * CommentsController constructor.
      *
-     * @param CommentRepository $commentRepository
+     * @param CommentRepository $repository
      */
-    public function __construct(CommentRepository $commentRepository)
+    public function __construct(CommentRepository $repository)
     {
-        $this->commentRepository = $commentRepository;
+        $this->repository = $repository;
     }
 
     /**
@@ -56,5 +58,15 @@ class CommentsController extends Controller
     public function update(CommentUpdateRequest $commentUpdateRequest, $id)
     {
         return $this->updateFromFormUpdateRequest($commentUpdateRequest, $id);
+    }
+
+    public function respondWithCollection($models)
+    {
+        return  Comment::collection($models);
+    }
+
+    public function respondWithItem($model)
+    {
+        return app(Comment::class, ['resource' => $model]);
     }
 }
