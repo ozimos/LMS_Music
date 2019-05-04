@@ -31,3 +31,7 @@ parameters:
             - "app/Contracts/Repositories/*"
         Symplify\CodingStandard\Sniffs\Naming\ClassNameSuffixByParentSniff: ~
             - "app/Repositories/*"
+        Symplify\CodingStandard\Fixer\Commenting\ParamReturnAndVarTagMalformsFixer: ~
+            - "app/Http/Controllers/*"
+        Symplify\CodingStandard\Fixer\Naming\PropertyNameMatchingTypeFixer: ~
+            - "app/Http/Controllers/*"

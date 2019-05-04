@@ -3,35 +3,54 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Support\DeferrableProvider;
+use App\Contracts\Repositories\GenreRepository;
+use App\Repositories\Eloquent\GenreRepositoryEloquent;
+use App\Contracts\Repositories\SongRepository; 
+use App\Repositories\Eloquent\SongRepositoryEloquent;
+use App\Contracts\Repositories\AlbumRepository; 
+use App\Repositories\Eloquent\AlbumRepositoryEloquent;
+use App\Contracts\Repositories\CommentRepository; 
+use App\Repositories\Eloquent\CommentRepositoryEloquent;
+use App\Contracts\Repositories\RatingRepository; 
+use App\Repositories\Eloquent\RatingRepositoryEloquent;
+use App\Contracts\Repositories\PlaylistRepository; 
+use App\Repositories\Eloquent\PlaylistRepositoryEloquent;
+use App\Contracts\Repositories\PaymentRepository; 
+use App\Repositories\Eloquent\PaymentRepositoryEloquent;
 
-class RepositoryServiceProvider extends ServiceProvider
+class RepositoryServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
-     * Register services.
+     * All of the container bindings that should be registered.
      *
-     * @return void
+     * @var array
      */
-    public function register()
-    {
-        //
-    }
+    public $bindings = [
+        GenreRepository::class => GenreRepositoryEloquent::class,
+        SongRepository::class => SongRepositoryEloquent::class,
+        AlbumRepository::class => AlbumRepositoryEloquent::class,
+        CommentRepository::class => CommentRepositoryEloquent::class,
+        RatingRepository::class => RatingRepositoryEloquent::class,
+        PlaylistRepository::class => PlaylistRepositoryEloquent::class,
+        PaymentRepository::class => PaymentRepositoryEloquent::class,
+    ];
 
     /**
-     * Bootstrap services.
+     * Get the services provided by the provider.
      *
-     * @return void
+     * @return array
      */
-    public function boot()
+    public function provides()
     {
-        $this->app->bind(\App\Contracts\Repositories\ProfileRepository::class, \App\Repositories\Eloquent\ProfileRepositoryEloquent::class);
-        $this->app->bind(\App\Contracts\Repositories\ArtisteRepository::class, \App\Repositories\Eloquent\ArtisteRepositoryEloquent::class);
-        $this->app->bind(\App\Contracts\Repositories\GenreRepository::class, \App\Repositories\Eloquent\GenreRepositoryEloquent::class);
-        $this->app->bind(\App\Contracts\Repositories\SongRepository::class, \App\Repositories\Eloquent\SongRepositoryEloquent::class);
-        $this->app->bind(\App\Contracts\Repositories\AlbumRepository::class, \App\Repositories\Eloquent\AlbumRepositoryEloquent::class);
-        $this->app->bind(\App\Contracts\Repositories\CommentRepository::class, \App\Repositories\Eloquent\CommentRepositoryEloquent::class);
-        $this->app->bind(\App\Contracts\Repositories\RatingRepository::class, \App\Repositories\Eloquent\RatingRepositoryEloquent::class);
-        $this->app->bind(\App\Contracts\Repositories\PlaylistRepository::class, \App\Repositories\Eloquent\PlaylistRepositoryEloquent::class);
-        $this->app->bind(\App\Contracts\Repositories\PaymentRepository::class, \App\Repositories\Eloquent\PaymentRepositoryEloquent::class);
-        //:end-bindings:
+        return [
+            GenreRepository::class,
+            SongRepository::class,
+            AlbumRepository::class,
+            CommentRepository::class,
+            RatingRepository::class,
+            PlaylistRepository::class,
+            PaymentRepository::class,
+        ];
     }
 }

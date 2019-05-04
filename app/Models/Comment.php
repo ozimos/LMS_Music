@@ -15,11 +15,6 @@ final class Comment extends Model implements Transformable
 {
     use TransformableTrait;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['',];
-
+    protected $fillable = ['content', 'user_id'];
+    protected $casts = ['user_id' => 'integer'];
 }

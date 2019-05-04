@@ -6,17 +6,21 @@ version: 2.1
 executors:
   my-executor:
     docker:
-      - image: circleci/php:7.3-stretch-node-browsers
-    working_directory: ~/music
+      - image: edbizarro/gitlab-ci-pipeline-php:7.3
+        environment:
+          DB_CONNECTION: pgsql
+          DB_DATABASE: circle_test
+          DB_USERNAME: root
+      - image: circleci/postgres:9.5-alpine-postgis-ram
+        environment:
+            POSTGRES_USER: root
+    working_directory:  ~/music
 jobs:
   build_project:
     executor: my-executor
     steps:
       - checkout
-
-      - run: sudo apt update && sudo apt install zlib1g-dev libsqlite3-dev
-      - run: sudo docker-php-ext-install zip
-
+      - run: php -i
       # Download and cache dependencies
 
       # composer cache
@@ -42,14 +46,12 @@ jobs:
 
       - restore_cache:
           keys:
-            - node-v4-{{ checksum "package.json" }}
-            - node-v4-
-      - run: npm install
+            - node-{{ checksum "package.json" }}
+      - run: npm update
       - save_cache:
-          key: node-v4-{{ checksum "package.json" }}
+          key: node-{{ checksum "package.json" }}
           paths:
             - node_modules
-            - ~/.yarn
       - persist_to_workspace:
           root: .
           paths: .
@@ -70,11 +72,19 @@ jobs:
           command: |
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
             chmod +x ./cc-test-reporter
+      - run:
+          name: install dockerize
+          command: curl -OL https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+          environment:
+            DOCKERIZE_VERSION: v0.3.0
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://127.0.0.1:5432 -timeout 2m
       - run: 
           name: Run LMS_Music Tests
           command: |
             ./cc-test-reporter before-build
-            ./vendor/bin/phpunit --prepend build/xdebug-filter.php --coverage-clover clover.xml
+            ./vendor/bin/phpunit --coverage-clover clover.xml
             ./cc-test-reporter after-build --coverage-input-type clover --exit-code $?
 workflows:
   version: 2
