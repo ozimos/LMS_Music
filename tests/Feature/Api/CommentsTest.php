@@ -19,7 +19,7 @@ class CommentsTest extends ControllerTestCase
             ]);
 
         // Act
-        $response = $this->get("{$this->endpoint}");
+        $response = $this->get($this->endpoint);
 
         // Assert
         $response->assertStatus(200);

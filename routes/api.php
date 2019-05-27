@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 Route::middleware(['auth:api', 'addUserId'])->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::name('api.register')->post('v1/register', 'RegisterController@apiRegister');
 Route::prefix('v1')
     ->middleware('auth:api')
     ->group(function () {
