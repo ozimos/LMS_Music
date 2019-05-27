@@ -16,16 +16,17 @@ class CreateAlbumsTable extends Migration
     public function up()
     {
         Schema::create(
-            'albums', function (Blueprint $table) {
-                $table->increments('id');
+            'albums',
+            function (Blueprint $table) {
+                $table->bigIncrements('id');
 
                 $table->string('title');
                 $table->text('description')->nullable();
                 $table->date('release_date')->nullable();
                 $table->string('image')->nullable();
 
-                $table->unsignedInteger('genre_id')->nullable();
-                $table->unsignedInteger('user_id');
+                $table->unsignedBigInteger('genre_id')->nullable();
+                $table->unsignedBigInteger('user_id');
                 $table->timestamps();
 
                 $table->foreign('genre_id')
