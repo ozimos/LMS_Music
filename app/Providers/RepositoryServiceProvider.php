@@ -18,6 +18,8 @@ use App\Contracts\Repositories\PlaylistRepository;
 use App\Repositories\Eloquent\PlaylistRepositoryEloquent;
 use App\Contracts\Repositories\PaymentRepository; 
 use App\Repositories\Eloquent\PaymentRepositoryEloquent;
+use App\Contracts\Repositories\UserRepository; 
+use App\Repositories\Eloquent\UserRepositoryEloquent;
 
 class RepositoryServiceProvider extends ServiceProvider implements DeferrableProvider
 {
@@ -34,6 +36,7 @@ class RepositoryServiceProvider extends ServiceProvider implements DeferrablePro
         RatingRepository::class => RatingRepositoryEloquent::class,
         PlaylistRepository::class => PlaylistRepositoryEloquent::class,
         PaymentRepository::class => PaymentRepositoryEloquent::class,
+        UserRepository::class => UserRepositoryEloquent::class,
     ];
 
     /**
@@ -51,6 +54,7 @@ class RepositoryServiceProvider extends ServiceProvider implements DeferrablePro
             RatingRepository::class,
             PlaylistRepository::class,
             PaymentRepository::class,
+            UserRepository::class,
         ];
     }
 }
