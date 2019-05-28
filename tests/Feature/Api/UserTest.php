@@ -27,8 +27,14 @@ class UserTest extends ControllerTestCase
         ])->json('GET', $this->endpoint);
 
         // Assert
-        $response->assertStatus(200);
-        $response->assertJson(['status' => 'success']);
+        // $response->assertStatus(200);
+        $response->assertJson([
+            'data' => [
+                ['id' => $this->user->id,
+                'email' => $this->user->email,
+                'name' => $this->user->name,]
+                ]
+        ]);
     }
     /** @test */
     function admin_user_can_get_user_by_id()
@@ -40,7 +46,13 @@ class UserTest extends ControllerTestCase
 
         // Assert
         $response->assertStatus(200);
-        $response->assertJson(['status' => 'success']);
+        $response->assertJson([
+            'data' => [
+                'id' => $this->user->id,
+                'email' => $this->user->email,
+                'name' => $this->user->name,
+                ]
+        ]);
     }
     /** @test */
     function user_can_get_user_by_id()
@@ -53,6 +65,12 @@ class UserTest extends ControllerTestCase
 
         // Assert
         $response->assertStatus(200);
-        $response->assertJson(['status' => 'success']);
+        $response->assertJson([
+            'data' => [
+            'id' => $this->user->id,
+            'email' => $this->user->email,
+            'name' => $this->user->name,
+            ]
+            ]);
     }
 }
