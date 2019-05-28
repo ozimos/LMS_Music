@@ -3,8 +3,7 @@
 namespace Tests;
 
 use App\User;
-use Laravel\Passport\ClientRepository;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 abstract class ControllerTestCase extends DBTestCase
 {
@@ -35,18 +34,8 @@ abstract class ControllerTestCase extends DBTestCase
     {
         $header = [];
         $header['Accept'] = 'application/json';
-        $clientRepository = new ClientRepository();
-        $client = $clientRepository->createPersonalAccessClient(
-            null,
-            'Test Personal Access Client',
-            'http://bridgeanalytics.cj/callback'
-        );
-        DB::table('oauth_personal_access_clients')->insert([
-            'client_id' => $client->id,
-            'created_at' => new \DateTime,
-            'updated_at' => new \DateTime,
-        ]);
-        $token = $user->createToken('TestToken')->accessToken;
+       
+        $token = Auth::guard('api')->fromUser($user);
         $header['Authorization'] = 'Bearer ' . $token;
 
         return $header;

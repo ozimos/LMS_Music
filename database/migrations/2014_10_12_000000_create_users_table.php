@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             'users',
             function (Blueprint $table) {
                 $table->bigIncrements('id');
-                $table->string('name');
+                $table->string('name')->nullable();
                 $table->boolean('isArtiste')->default(false);
                 $table->boolean('isAdmin')->default(false);
                 $table->string('email')->unique();

@@ -13,10 +13,20 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware(['auth:api', 'addUserId'])->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('v1/auth')->group(function () {
+    Route::post('register', 'AuthController@register');
+    Route::post('login', 'AuthController@login');
+    Route::get('refresh', 'AuthController@refresh');
+    Route::middleware(['auth:api', 'addUserId'])->group(function(){
+        Route::get('user', 'AuthController@user');
+        Route::post('logout', 'AuthController@logout');
+    });
 });
-Route::name('api.register')->post('v1/register', 'RegisterController@apiRegister');
+Route::prefix('v1')->middleware('auth:api')->group(function(){
+    // Users
+    Route::get('users', 'UserController@index')->middleware('isAdmin');
+    Route::get('users/{id}', 'UserController@show')->middleware('isAdminOrSelf');
+});
 Route::prefix('v1')
     ->middleware('auth:api')
     ->group(function () {
