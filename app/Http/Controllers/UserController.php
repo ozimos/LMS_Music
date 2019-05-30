@@ -4,23 +4,30 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Http\Resources\UserResource;
+use App\Contracts\Repositories\UserRepository;
 
 class UserController extends Controller
 {
-    public function index()
+    private $userRepository;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(UserRepository $userRepository)
     {
-        $users = User::all();
-        return response()->json([
-            'status' => 'success',
-                'users' => $users->toArray()
-        ], 200);
+        $this->userRepository = $userRepository;
     }
+
+    public function index()
+    { 
+        return UserResource::collection($this->userRepository->all());
+    }
+
     public function show(Request $request, $id)
     {
-        $user = User::find($id);
-        return response()->json([
-            'status' => 'success',
-                'user' => $user->toArray()
-        ], 200);
+        return new UserResource($this->userRepository->find($id));
     }
 }

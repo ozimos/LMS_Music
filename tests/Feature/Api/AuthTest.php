@@ -27,9 +27,11 @@ class AuthTest extends ControllerTestCase
         ]);
 
         // Assert
-        // $response->assertStatus(201);
-        $response->assertJson(['status' => 'success']);
-        $response->assertHeader('Authorization');
+        $response->assertStatus(201);
+        $response->assertJsonStructure([
+            'meta' => ['token'],
+            'data' => ['id', 'name', 'email']
+            ]);
     }
     /** @test */
     function new_user_can_login()
@@ -46,8 +48,10 @@ class AuthTest extends ControllerTestCase
 
         // Assert
         $response->assertStatus(200);
-        $response->assertJson(['status' => 'success']);
-        $response->assertHeader('Authorization');
+        $response->assertJsonStructure([
+            'meta' => ['token'],
+            'data' => ['id', 'name', 'email']
+            ]);
     }
     /** @test */
     function user_can_logout()
@@ -56,16 +60,14 @@ class AuthTest extends ControllerTestCase
         $defaultHeader = [
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
         ];
+
         // Act
         $response = $this->withHeaders(array_merge($defaultHeader, $header))
-            ->json('POST', "{$this->endpoint}/logout");
+            ->json('GET', "{$this->endpoint}/logout");
 
         // Assert
         $response->assertStatus(200);
-        $response->assertJson([
-            'status' => 'success',
-            'msg' => 'Logged out Successfully.'
-            ]);
+        $response->assertJson(['message' => 'Logged out Successfully']);
     }
     /** @test */
     function user_can_be_got()
@@ -74,6 +76,7 @@ class AuthTest extends ControllerTestCase
         $defaultHeader = [
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
         ];
+
         // Act
         $response = $this->withHeaders(array_merge($defaultHeader, $header))
             ->json('GET', "{$this->endpoint}/user");
@@ -81,8 +84,11 @@ class AuthTest extends ControllerTestCase
         // Assert
         $response->assertStatus(200);
         $response->assertJson([
-            'status' => 'success',
-            'data' => $this->user->toArray()
+            'data' => [
+                'id' => $this->user->id,
+                'email' => $this->user->email,
+                'name' => $this->user->name,
+                ]
             ]);
     }
     /** @test */
@@ -92,14 +98,15 @@ class AuthTest extends ControllerTestCase
         $defaultHeader = [
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
         ];
+
         // Act
         $response = $this->withHeaders(array_merge($defaultHeader, $header))
             ->json('GET', "{$this->endpoint}/refresh");
 
         // Assert
         $response->assertStatus(200);
-        $response->assertJson([
-            'status' => 'success',
+        $response->assertJsonStructure([
+            'meta' => ['token'],
             ]);
     }
 }
