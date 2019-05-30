@@ -25,9 +25,9 @@ const parseValidationErrorResponse = response => {
 const mapDispatchToProps = dispatch => ({
   submitSignup: signUpData => {
     return axios
-      .post('/api/signup', signUpData)
+      .post('/api/v1/auth/register', signUpData)
       .then(response => {
-        if (response.status === 200) {
+        if (response.status === 201) {
           // Successful signup, move on to dashboard/overview.
           dispatch(push('/'))
         }

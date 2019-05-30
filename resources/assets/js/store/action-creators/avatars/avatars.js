@@ -5,7 +5,7 @@ import { userActions as actions } from 'store/actions'
 
 export const uploadUserAvatar = (fileData, userId) => async dispatch => {
   const response = await dispatch(
-    makeRequest('set-user-avatar', () => axios.post('/api/avatars', fileData))
+    makeRequest('set-user-avatar', () => axios.post('/api/v1/avatars', fileData))
   )
 
   dispatch({

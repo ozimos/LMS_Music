@@ -10,12 +10,11 @@ export {
   PasswordFormLine,
   TextFormLine,
   TextAreaFormLine,
-  RadioGroupFormLine
+  RadioGroupFormLine,
+  CheckBoxFormLine
 } from './Forms/FormLine'
-export { FormLineItem, RadioFormLineItem } from './Forms/FormLineItem'
 export * from './Icons'
-export { PasswordInput, TextArea, TextInput, RadioInput } from './Forms/Inputs'
-export { RadioGroup } from './Forms/RadioGroup'
+export { PasswordInput, TextArea, TextInput, RadioInput, RadioGroup, CheckBoxInput } from './Forms/Inputs'
 export { Logo } from './Logo/Logo'
 export { ModalProviderWrapper, ModalRoot } from './Modal'
 export { PictureUpload } from './PictureUpload/PictureUpload'

@@ -60,9 +60,10 @@ class AuthTest extends ControllerTestCase
         $defaultHeader = [
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
         ];
+
         // Act
         $response = $this->withHeaders(array_merge($defaultHeader, $header))
-            ->json('POST', "{$this->endpoint}/logout");
+            ->json('GET', "{$this->endpoint}/logout");
 
         // Assert
         $response->assertStatus(200);
@@ -75,6 +76,7 @@ class AuthTest extends ControllerTestCase
         $defaultHeader = [
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
         ];
+
         // Act
         $response = $this->withHeaders(array_merge($defaultHeader, $header))
             ->json('GET', "{$this->endpoint}/user");
@@ -96,6 +98,7 @@ class AuthTest extends ControllerTestCase
         $defaultHeader = [
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
         ];
+
         // Act
         $response = $this->withHeaders(array_merge($defaultHeader, $header))
             ->json('GET', "{$this->endpoint}/refresh");

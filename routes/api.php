@@ -19,7 +19,7 @@ Route::prefix('v1/auth')->group(function () {
         Route::get('refresh', 'AuthController@refresh')->name('refresh');
     Route::middleware(['auth:api', 'addUserId'])->group(function(){
         Route::get('user', 'AuthController@user')->name('user');
-        Route::post('logout', 'AuthController@logout')->name('logout');
+        Route::get('logout', 'AuthController@logout')->name('logout');
     });
 });
 Route::prefix('v1')->middleware('auth:api')->group(function(){

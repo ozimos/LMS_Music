@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { reduxForm, Field } from 'redux-form'
 
-import { PasswordFormLine, TextFormLine, RadioGroupFormLine, NeutralButton } from 'components'
+import { PasswordFormLine, TextFormLine, CheckBoxFormLine, NeutralButton } from 'components'
 import { email as emailRegex } from 'constants/regexes'
 import { linkStyle } from 'constants/styles'
 
@@ -27,21 +27,7 @@ const validateSignUp = values => {
 
 const SignUpForm = props => {
   const { handleSubmit } = props
-  const input = {
-    radios: [
-      {
-        name: 'isArtiste',
-        labelText: 'Yes',
-        value: true,
-        checked: false
-      },
-      {
-        name: 'isArtiste',
-        labelText: 'No',
-        checked: true,
-        value: false
-      }
-    ]}
+
   return (
     <form onSubmit={handleSubmit}>
       <Field
@@ -63,16 +49,17 @@ const SignUpForm = props => {
         labelText="Confirm your Password"
       />
       <Field
-        component={PasswordFormLine}
+        component={TextFormLine}
         type="text"
         name="name"
         labelText="Your name (optional)"
       />
-      <RadioGroupFormLine
-        name="artisteField"
+      <Field
+        component={CheckBoxFormLine}
+        type="checkbox"
+        checked={false}
+        name="isArtiste"
         labelText="Are you an artiste (optional)"
-        meta={{}}
-        input={input}
       />
       <div className="flex items-center">
         <Link className={linkStyle} to="/login">

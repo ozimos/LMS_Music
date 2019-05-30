@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { PasswordInput, TextArea, TextInput, RadioGroup } from 'components'
+import { PasswordInput, TextArea, TextInput, RadioGroup, CheckBoxInput } from 'components'
 
 export const FormLine = ({
   labelText,
@@ -36,8 +36,14 @@ export const TextAreaFormLine = ({ input, ...wrapperProps }) => (
     <TextArea {...input} />
   </FormLine>
 )
-export const RadioGroupFormLine = ({ input, ...wrapperProps }) => (
+
+export const CheckBoxFormLine = ({ input, ...wrapperProps }) => (
   <FormLine {...wrapperProps}>
-    <RadioGroup {...input} />
+    <CheckBoxInput {...input} />
+  </FormLine>
+)
+export const RadioGroupFormLine = ({ input, radios, ...wrapperProps }) => (
+  <FormLine {...wrapperProps}>
+    <RadioGroup input={input} radios={radios} />
   </FormLine>
 )

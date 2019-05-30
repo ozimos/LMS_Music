@@ -61,11 +61,14 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   logOut: async () => {
-    await axios.get('/api/logout')
+    try {
+      await axios.get('/api/v1/auth/logout')
 
-    dispatch({ type: sessionActions.LOGOUT })
+      dispatch({ type: sessionActions.LOGOUT })
 
-    dispatch(push('/login'))
+      dispatch(push('/login'))
+    } catch (error) {
+    }
   }
 })
 

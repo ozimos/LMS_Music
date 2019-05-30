@@ -63,7 +63,7 @@ const moduleSCSSLoader = ({ verbatim }) => ({
     {
       loader: 'css-loader',
       options: {
-        import: 1,
+        import: true,
         modules: !verbatim,
         localIdentName: '[local]_[hash:base64:5]'
       }

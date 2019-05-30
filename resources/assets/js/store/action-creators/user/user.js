@@ -7,7 +7,7 @@ export const saveUser = userData => async dispatch => {
 
   const response = await dispatch(
     makeRequest('save-user-settings', () =>
-      axios.put(`/api/users/${id}`, userData)
+      axios.put(`/api/v1/users/${id}`, userData)
     )
   )
 
@@ -19,7 +19,7 @@ export const changePassword = data => async dispatch => {
 
   const response = await dispatch(
     makeRequest('change-user-password', () =>
-      axios.put(`/api/users/${userId}/update-password`, data)
+      axios.put(`/api/v1/users/${userId}/update-password`, data)
     )
   )
 

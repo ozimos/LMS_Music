@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { reduxForm, Field } from 'redux-form'
 
-import { PositiveButton, TextFormLine, PictureUpload } from 'components'
+import { PositiveButton, TextFormLine, CheckBoxFormLine, PictureUpload } from 'components'
 import { email as emailRegex } from 'constants/regexes'
 
 export class UserSettingsFormComponent extends React.Component {
@@ -20,16 +20,18 @@ export class UserSettingsFormComponent extends React.Component {
           />
           <div className="flex-grow">
             <Field
-              name="first_name"
+              name="name"
               component={TextFormLine}
-              labelText="First Name"
-            />
-            <Field
-              name="last_name"
-              component={TextFormLine}
-              labelText="Last Name"
+              labelText="Name"
             />
             <Field name="email" component={TextFormLine} labelText="Email" />
+            <Field
+              component={CheckBoxFormLine}
+              type="checkbox"
+              checked={false}
+              name="isArtiste"
+              labelText="Are you an artiste"
+            />
           </div>
         </div>
 

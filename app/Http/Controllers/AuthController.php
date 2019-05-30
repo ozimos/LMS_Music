@@ -30,9 +30,7 @@ class AuthController extends Controller
 
     public function register(UserRequest $request)
     {
-        $data = $request->only([
-            'name', 'email', 'isArtiste', 'isAdmin', 
-        ]);
+        $data = $request->only(['name', 'email', 'isArtiste', 'isAdmin',]);
         $data['password'] = Hash::make($request->password);
         $user = $this->userRepository->create($data);
 
@@ -40,7 +38,7 @@ class AuthController extends Controller
             return abort(401);
         };
 
-        return (new UserResource($request->user()))
+        return (new UserResource($user))
             ->additional(['meta' => ['token' => $token]])
             ->response()
             ->setStatusCode(201);;
