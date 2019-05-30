@@ -34,9 +34,7 @@ class AuthController extends Controller
         $data['password'] = Hash::make($request->password);
         $user = $this->userRepository->create($data);
 
-        if(!$token = auth()->fromUser($user)){
-            return abort(401);
-        };
+        $token = auth()->fromUser($user);
 
         return (new UserResource($user))
             ->additional(['meta' => ['token' => $token]])
@@ -76,10 +74,13 @@ class AuthController extends Controller
 
     public function refresh()
     {
-        if ($token = auth()->refresh()) {
-            return ['meta' => ['token' => $token]];
+        try{
+            if ($token = auth()->refresh()) {
+                $response =  ['meta' => ['token' => $token]];
+            }
+        } catch(\Exception $error){
+            $response = response()->json(['error' => 'refresh_token_error'], 422);
         }
-
-        return response()->json(['error' => 'refresh_token_error'], 401);
+        return $response;
     }
 }

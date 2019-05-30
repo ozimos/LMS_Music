@@ -49,7 +49,9 @@ trait CrudMethodsTrait
 
     /**
      * Show the form for editing the specified resource.
-     *
+     * 
+     * @codeCoverageIgnore
+     * 
      * @return JsonResponse
      */
     public function search()
@@ -95,7 +97,9 @@ trait CrudMethodsTrait
 
     /**
      * Return the Model Name.
-     *
+     * 
+     * @codeCoverageIgnore
+     * 
      * @return string
      */
     public function getModel()
