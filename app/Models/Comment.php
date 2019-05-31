@@ -2,19 +2,20 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
-use Prettus\Repository\Contracts\Transformable;
-use Prettus\Repository\Traits\TransformableTrait;
 
 /**
  * Class Comment.
  *
  * @package namespace App\Models;
  */
-final class Comment extends Model implements Transformable
+final class Comment extends Model
 {
-    use TransformableTrait;
-
     protected $fillable = ['content', 'user_id'];
     protected $casts = ['user_id' => 'integer'];
+    public function user() 
+    {
+        return $this->belongsTo(User::class);
+    }
 }

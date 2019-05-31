@@ -18,6 +18,7 @@ class UserTest extends ControllerTestCase
         ]);
         $this->actingAs($adminUser, 'api');
     }
+
     /** @test */
     function admin_can_get_user_list()
     {
@@ -44,25 +45,6 @@ class UserTest extends ControllerTestCase
         $response = $this->withHeaders([
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
         ])->json('GET', "{$this->endpoint}/{$this->user->id}");
-
-        // Assert
-        $response->assertStatus(200);
-        $response->assertJson([
-            'data' => [
-                'id' => $this->user->id,
-                'email' => $this->user->email,
-                'name' => $this->user->name,
-                ]
-        ]);
-    }
-
-    /** @test */
-    function admin_can_update_user_by_id()
-    {
-        // Act
-        $response = $this->withHeaders([
-            'HTTP_X-Requested-With' => 'XMLHttpRequest',
-        ])->json('PUT', "{$this->endpoint}/{$this->user->id}");
 
         // Assert
         $response->assertStatus(200);

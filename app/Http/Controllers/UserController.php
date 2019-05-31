@@ -22,6 +22,8 @@ final class UserController extends Controller implements ResponseInterface
     public function __construct(UserRepository $repository)
     {
         $this->repository = $repository;
+        $this->middleware('isAdmin')->only(['index', 'destroy']);
+        $this->middleware('isAdminOrSelf')->only(['show', 'update']);
     }
 
     /**
