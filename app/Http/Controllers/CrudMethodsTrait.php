@@ -73,10 +73,10 @@ trait CrudMethodsTrait
      * @return JsonResponse
      *
      */
-    protected function updateFromFormUpdateRequest($formRequest, $id)
+    protected function updateFromFormUpdateRequest($formRequest, $id, string $ability = 'update-model')
     {
         $model = $this->repository->find($id);
-        if (Gate::denies('update-model', $model)) {
+        if (Gate::denies($ability, $model)) {
             return response()->json(['error' => 'UnAuthorized'], 403);
         }
         $model = $this->repository->update($formRequest->all(), $id);

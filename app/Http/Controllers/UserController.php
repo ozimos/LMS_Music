@@ -39,7 +39,7 @@ final class UserController extends Controller implements ResponseInterface
     {
         $withoutPassword = collect($userUpdateRequest->all())->except('password')->toArray();
         $userUpdateRequest->replace($withoutPassword);
-        return $this->updateFromFormUpdateRequest($userUpdateRequest, $id);
+        return $this->updateFromFormUpdateRequest($userUpdateRequest, $id, 'pass');
     }
 
     public function respondWithCollection($models)

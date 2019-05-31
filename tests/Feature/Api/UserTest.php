@@ -18,7 +18,7 @@ class UserTest extends ControllerTestCase
         ]);
         $this->actingAs($adminUser, 'api');
     }
-
+    
     /** @test */
     function admin_can_get_user_list()
     {
@@ -53,6 +53,27 @@ class UserTest extends ControllerTestCase
                 'id' => $this->user->id,
                 'email' => $this->user->email,
                 'name' => $this->user->name,
+                ]
+        ]);
+    }
+
+    /** @test */
+    function user_can_update_user_by_id()
+    {
+        $this->actingAs($this->user, 'api');
+        $updatedName= ['name' => 'random'];
+        // Act
+        $response = $this->withHeaders([
+            'HTTP_X-Requested-With' => 'XMLHttpRequest',
+        ])->json('PUT', "{$this->endpoint}/{$this->user->id}", $updatedName);
+
+        // Assert
+        // $response->assertStatus(200);
+        $response->assertJson([
+            'data' => [
+                'id' => $this->user->id,
+                'email' => $this->user->email,
+                'name' => $updatedName['name'],
                 ]
         ]);
     }
