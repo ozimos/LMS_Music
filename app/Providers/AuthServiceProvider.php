@@ -24,5 +24,15 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        Gate::define('update-model', function ($user, $model) {
+            return $user->id == $model->user_id;
+        });
+        Gate::define('delete-model', function ($user, $model) {
+            return $user->id == $model->user_id || $user->isAdmin;
+        });
+        Gate::define('pass', function ($user, $model) {
+            return true;
+        });
     }
 }

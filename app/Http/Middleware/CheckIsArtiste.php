@@ -4,8 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
-
-class CheckIsAdminOrSelf
+class CheckIsArtiste
 {
     /**
      * Handle an incoming request.
@@ -16,12 +15,7 @@ class CheckIsAdminOrSelf
      */
     public function handle($request, Closure $next)
     {
-        $requestedUserId = $request->route()->parameter('user');
-
-        if(
-            Auth::user()->isAdmin ||
-            Auth::id() == $requestedUserId
-        ) {
+        if(Auth::user()->isArtiste) {
             return $next($request);
         }
         else {

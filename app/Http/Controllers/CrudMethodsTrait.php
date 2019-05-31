@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Collection;
 use Prettus\Repository\Criteria\RequestCriteria;
 
@@ -72,8 +73,12 @@ trait CrudMethodsTrait
      * @return JsonResponse
      *
      */
-    protected function updateFromFormUpdateRequest($formRequest, $id)
+    protected function updateFromFormUpdateRequest($formRequest, $id, string $ability = 'update-model')
     {
+        $model = $this->repository->find($id);
+        if (Gate::denies($ability, $model)) {
+            return response()->json(['error' => 'UnAuthorized'], 403);
+        }
         $model = $this->repository->update($formRequest->all(), $id);
         return $this->respondWithItem($model);
     }
@@ -88,6 +93,18 @@ trait CrudMethodsTrait
      */
     public function destroy($id)
     {
+        $model = $this->repository->find($id);
+
+        Gate::before(function ($user) {
+            if ($user->isAdmin) {
+                return true;
+            }
+        });
+        
+        if (Gate::denies('delete-model', $model)) {
+            return response()->json(['error' => 'UnAuthorized'], 403);
+        }
+
         $deleted = $this->repository->delete($id);
         return response()->json([
             'message' => 'Model deleted.',

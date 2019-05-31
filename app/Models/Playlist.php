@@ -3,23 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Prettus\Repository\Contracts\Transformable;
-use Prettus\Repository\Traits\TransformableTrait;
 
 /**
  * Class Playlist.
  *
  * @package namespace App\Models;
  */
-final class Playlist extends Model implements Transformable
+final class Playlist extends Model
 {
-    use TransformableTrait;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['',];
+    protected $fillable = [''];
 
 }

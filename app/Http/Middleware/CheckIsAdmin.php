@@ -19,7 +19,7 @@ class CheckIsAdmin
             return $next($request);
         }
         else {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            return response()->json( ['error' => 'UnAuthorized'], 403);
         }
     }
 }
