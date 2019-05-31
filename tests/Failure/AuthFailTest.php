@@ -18,7 +18,7 @@ class AuthFailTest extends ControllerTestCase
         'password' => 'stringid'];
 
         // Act
-        $response = $this->post("{$this->endpoint}/login", $credentials);
+        $response = $this->json('POST', "{$this->endpoint}/login", $credentials);
         // Assert
         $response->assertStatus(422);
         $response->assertJsonFragment([
@@ -37,11 +37,10 @@ class AuthFailTest extends ControllerTestCase
         'password' => 'stringid'];
 
         // Act
-        $response = $this->post("{$this->endpoint}/register", $credentials);
+        $response = $this->json('POST', "{$this->endpoint}/register", $credentials);
         // Assert
         $response->assertStatus(422);
         $response->assertJsonFragment([
-            "status" => "error",
             'errors' => [
                 'email' => [
                     "The email must be a string.",
@@ -57,10 +56,13 @@ class AuthFailTest extends ControllerTestCase
      */
     function user_try_to_refresh_token_with_invalid_token()
     {
-        $invalidToken = ['Authorization' => 'Bearer wrong_token'];
+        $invalidTokenHeaders = [
+            'Authorization' => 'Bearer wrong_token', 
+            'X-Requested-With' => 'XMLHttpRequest'
+        ];
 
         // Act
-        $response = $this->withHeaders($invalidToken)->get("{$this->endpoint}/refresh");
+        $response = $this->withHeaders($invalidTokenHeaders)->json('GET', "{$this->endpoint}/refresh");
         // Assert
         $response->assertStatus(422);
         $response->assertJsonFragment([

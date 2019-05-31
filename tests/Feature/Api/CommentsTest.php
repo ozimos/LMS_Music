@@ -50,11 +50,9 @@ class CommentsTest extends ControllerTestCase
     /** @test */
     function user_can_create_a_single_comment()
     {
-        $comment = factory(Comment::class)->make([
-            'user_id' => $this->user->id
-        ]);
         $input = [
-            'content' => $comment->content,
+            'content' => 'some content',
+            'random' => 'some random'
         ];
 
         // Act
@@ -62,10 +60,10 @@ class CommentsTest extends ControllerTestCase
             'X-Requested-With' => 'XMLHttpRequest',
         ])->json('POST', $this->endpoint, $input);
         // Assert
-        // $response->assertStatus(201);
+        $response->assertStatus(201);
         $response->assertJsonFragment([
-            'content' => $comment->content,
-            'user_id' => $comment->user_id
+            'content' => $input['content'],
+            'user_id' => $this->user->id
         ]);
     }
 
@@ -100,7 +98,7 @@ class CommentsTest extends ControllerTestCase
         ]);
         $commentId = $comment->id;
         // Act
-        $deleteResponse = $this->delete("{$this->endpoint}/{$commentId}");
+        $deleteResponse = $this->json('DELETE', "{$this->endpoint}/{$commentId}");
         $getResponse = $this->get("{$this->endpoint}/{$commentId}");
         // Assert
         $deleteResponse->assertStatus(200);

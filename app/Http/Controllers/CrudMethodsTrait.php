@@ -28,7 +28,7 @@ trait CrudMethodsTrait
      * @return JsonResponse
      *
      */
-    protected function storeFromFormCreateRequest(FormRequest $formRequest)
+    protected function storeFromFormCreateRequest($formRequest)
     {
         $model = $this->repository->create($formRequest->all());
         return $this->respondWithItem($model)->response()->setStatusCode(201);
@@ -72,7 +72,7 @@ trait CrudMethodsTrait
      * @return JsonResponse
      *
      */
-    protected function updateFromFormUpdateRequest(FormRequest $formRequest, $id)
+    protected function updateFromFormUpdateRequest($formRequest, $id)
     {
         $model = $this->repository->update($formRequest->all(), $id);
         return $this->respondWithItem($model);

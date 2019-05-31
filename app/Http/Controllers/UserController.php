@@ -2,32 +2,51 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\User;
+use App\Http\Requests\UserUpdateRequest;
+use Illuminate\Http\JsonResponse;
 use App\Http\Resources\UserResource;
 use App\Contracts\Repositories\UserRepository;
+use App\Contracts\ResponseInterface;
 
-class UserController extends Controller
+final class UserController extends Controller implements ResponseInterface
 {
-    private $userRepository;
+    use CrudMethodsTrait;
+
+    private $repository;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $repository)
     {
-        $this->userRepository = $userRepository;
+        $this->repository = $repository;
     }
 
-    public function index()
-    { 
-        return UserResource::collection($this->userRepository->all());
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  UserUpdateRequest $userUpdateRequest
+     * @param  string            $id
+     *
+     * @return JsonResponse
+     *
+     */
+    public function update(UserUpdateRequest $userUpdateRequest, $id)
+    {
+        $withoutPassword = collect($userUpdateRequest->all())->except('password')->toArray();
+        $userUpdateRequest->replace($withoutPassword);
+        return $this->updateFromFormUpdateRequest($userUpdateRequest, $id);
     }
 
-    public function show(Request $request, $id)
+    public function respondWithCollection($models)
     {
-        return new UserResource($this->userRepository->find($id));
+        return  UserResource::collection($models);
+    }
+
+    public function respondWithItem($model)
+    {
+        return app(UserResource::class, ['resource' => $model]);
     }
 }
