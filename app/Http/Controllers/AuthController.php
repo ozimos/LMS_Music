@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 use App\Http\Resources\UserResource;
 use App\Http\Requests\UserRequest;
+use Exception;
 
 
 class AuthController extends Controller
@@ -78,7 +79,7 @@ class AuthController extends Controller
             if ($token = auth()->refresh()) {
                 $response =  ['meta' => ['token' => $token]];
             }
-        } catch(\Exception $error){
+        } catch(Exception $error){
             $response = response()->json(['error' => 'refresh_token_error'], 422);
         }
         return $response;

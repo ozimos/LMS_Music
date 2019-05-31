@@ -18,7 +18,7 @@ class AuthTest extends ControllerTestCase
 
         // Act
         $response = $this->withHeaders([
-            'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            'X-Requested-With' => 'XMLHttpRequest',
         ])->json('POST', "{$this->endpoint}/register", [
             'name' => $user->name,
             'email' => $user->email,
@@ -40,7 +40,7 @@ class AuthTest extends ControllerTestCase
 
         // Act
         $response = $this->withHeaders([
-            'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            'X-Requested-With' => 'XMLHttpRequest',
         ])->json('POST', "{$this->endpoint}/login", [
             'email' => $user->email,
             'password' => 'password',
@@ -58,7 +58,7 @@ class AuthTest extends ControllerTestCase
     {
         $header = static::getHeaders($this->user);
         $defaultHeader = [
-            'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            'X-Requested-With' => 'XMLHttpRequest',
         ];
 
         // Act
@@ -74,7 +74,7 @@ class AuthTest extends ControllerTestCase
     {
         $header = static::getHeaders($this->user);
         $defaultHeader = [
-            'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            'X-Requested-With' => 'XMLHttpRequest',
         ];
 
         // Act
@@ -96,7 +96,7 @@ class AuthTest extends ControllerTestCase
     {
         $header = static::getHeaders($this->user);
         $defaultHeader = [
-            'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            'X-Requested-With' => 'XMLHttpRequest',
         ];
 
         // Act

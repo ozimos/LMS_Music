@@ -16,7 +16,8 @@ class CheckIsAdminOrSelf
      */
     public function handle($request, Closure $next)
     {
-        $requestedUserId = $request->route()->parameter('id');
+        $requestedUserId = $request->route()->parameter('user');
+
         if(
             Auth::user()->isAdmin ||
             Auth::id() == $requestedUserId

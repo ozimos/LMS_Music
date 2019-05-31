@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::prefix('v1/auth')->group(function () {
+Route::prefix('v1/auth')->name('auth.')->group(function () {
         Route::post('register', 'AuthController@register')->name('register');
         Route::post('login', 'AuthController@login')->name('login');
         Route::get('refresh', 'AuthController@refresh')->name('refresh');
@@ -24,8 +24,10 @@ Route::prefix('v1/auth')->group(function () {
 });
 Route::prefix('v1')->middleware('auth:api')->group(function(){
     // Users
-    Route::get('users', 'UserController@index')->middleware('isAdmin');
-    Route::get('users/{id}', 'UserController@show')->middleware('isAdminOrSelf');
+    Route::get('users', 'UserController@index')->middleware('isAdmin')->name('users.index');
+    Route::delete('users/{user}', 'UserController@index')->middleware('isAdmin')->name('users.destroy');
+    Route::apiResource('users', 'UserController')->middleware('isAdminOrSelf')
+    ->except(['index', 'store', 'destroy']);
 });
 Route::prefix('v1')
     ->middleware('auth:api')
