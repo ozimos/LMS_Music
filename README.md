@@ -1,18 +1,36 @@
+# LMS Music
 [![Test Coverage](https://api.codeclimate.com/v1/badges/4d72d83213b6d9ea71e0/test_coverage)](https://codeclimate.com/github/ozimos/LMS_Music/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/4d72d83213b6d9ea71e0/maintainability)](https://codeclimate.com/github/ozimos/LMS_Music/maintainability)
 
-The Music App Store API has the following features
+## What the project does
+
+This is a Music App Store API that will bring an upcoming artiste to the limelight
+
+# Table of Contents
+* [Features](##Features)
+* [Getting Started](##Getting-Started)
+* [Authors](##Authors)
+* [Licence](##Licence)
+* [Release](##Release)
+
+
+## Features
+
+### The Music App Store API has the following features
+
 * Authentication
-* Artiste to create a profile
-* Artiste to create albums
-* Artiste to add tracks to albums
+* Artiste to create a profile POST /api/v1/profiles
+* Artiste to create albums POST /api/v1/albums
+* Artiste to add tracks to albums POST /api/v1/songs
 * Creation of a genre of music (blues, pop, afro)
 * Payment for a premium account
 * Generation of payment receipt in PDF format
 
-The Music App Store API allows the user to:
-* Create a sign-up profile
-* Log in /Log out
+### The Music App Store API allows the user to:
+
+* Create a sign-up profile POST /api/v1/auth/register
+* Log in POST /api/v1/auth/login
+* Log out GET /api/v1/auth/logout
 * Search or go through music genre/categories
 * Play/View the songs
 * Create a playlists
@@ -22,3 +40,18 @@ The Music App Store API allows the user to:
 * Add comments/Rating on a song
 * Recommend a song to a friend
 * Share a playlist with a friend
+
+## Getting Started
+
+* [Track progress on app features with Pivotal Tracker](<https://www.pivotaltracker.com/n/projects/2342164> "Pivotal Tracker Project")
+
+## Release
+* Version 0.1.0
+  * Still in developement
+
+## Authors
+* **Tovieye Moses Ozi**
+
+
+## License
+  [MIT License](https://opensource.org/licenses/MIT)

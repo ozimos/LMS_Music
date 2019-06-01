@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Http\Collection;
-use Prettus\Repository\Criteria\RequestCriteria;
 
 trait CrudMethodsTrait
 {
@@ -16,7 +14,6 @@ trait CrudMethodsTrait
      */
     public function index()
     {
-        $this->repository->pushCriteria(app(RequestCriteria::class));
         $models = $this->repository->all();
         return $this->respondWithCollection($models);
     }

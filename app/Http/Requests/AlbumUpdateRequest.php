@@ -27,6 +27,7 @@ class AlbumUpdateRequest extends FormRequest
             'title' => ['sometimes', 'required', 'string', 'max:255'],
             'description' => ['sometimes', 'required', 'string'],
             'release_date' => ['sometimes', 'required', 'string', 'date', 'release_date'],
+            'genre_id' => ['integer', 'sometimes', 'required'],
             'image' => ['string', 'sometimes', 'required'],
         ];
     }

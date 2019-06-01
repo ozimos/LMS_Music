@@ -24,6 +24,18 @@ class CreateSongsTable extends Migration
                 $table->text('description')->nullable();
                 $table->date('release_date')->nullable();
                 $table->string('file');
+                
+                $table->unsignedBigInteger('album_id')->nullable();
+                $table->unsignedBigInteger('genre_id')->nullable();
+                $table->timestamps();
+
+                $table->foreign('album_id')
+                ->references('id')
+                ->on('albums')
+                ->onDelete('cascade');
+                $table->foreign('genre_id')
+                ->references('id')
+                ->on('genres');
             }
         );
     }

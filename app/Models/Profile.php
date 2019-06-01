@@ -20,7 +20,7 @@ final class Profile extends Model
      * @var array
      */
     protected $fillable = ['content', 'user_id', 'website', 'twitter', 'facebook', 'instagram'];
-    public function artiste() 
+    public function user() 
     {
         return $this->belongsTo(User::class);
     }

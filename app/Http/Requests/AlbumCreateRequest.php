@@ -27,6 +27,8 @@ class AlbumCreateRequest extends FormRequest
             'title' => ['required', 'string', 'max:255'],
             'description' => ['sometimes', 'required', 'string'],
             'release_date' => ['sometimes', 'required', 'string', 'date', 'release_date'],
+            'genre_id' => ['integer', 'sometimes', 'required'],
+            'user_id' => ['integer', 'sometimes', 'required'],
             'image' => ['string', 'sometimes', 'required'],
         ];
     }

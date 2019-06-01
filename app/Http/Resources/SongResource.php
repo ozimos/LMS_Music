@@ -19,8 +19,11 @@ class SongResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
+            'album_id' => $this->album_id,
             'release_date' => $this->release_date,
             'file' => $this->file,
+            'genre' => new GenreResource($this->whenLoaded('genre')),
+            'album' => new AlbumResource($this->whenLoaded('album')),
         ];
     }
 }
