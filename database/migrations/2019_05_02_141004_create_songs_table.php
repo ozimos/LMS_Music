@@ -23,6 +23,7 @@ class CreateSongsTable extends Migration
                 $table->string('title');
                 $table->text('description')->nullable();
                 $table->date('release_date')->nullable();
+                $table->string('file');
             }
         );
     }

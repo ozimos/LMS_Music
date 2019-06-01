@@ -32,6 +32,7 @@ Route::prefix('v1')->middleware('auth:api')->group(function(){
         Route::apiResources([
             'comments' => 'CommentsController',
             'profiles' => 'ProfilesController',
+            'albums'   => 'AlbumsController',
         ]);
     });
 
