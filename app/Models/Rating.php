@@ -11,12 +11,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 final class Rating extends Model
 {
+    
+    protected $casts = ['stars' => 'integer'];
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['',];
+    protected $fillable = ['stars', 'content'];
 
 }

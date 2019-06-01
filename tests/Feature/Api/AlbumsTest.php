@@ -2,14 +2,14 @@
 
 namespace Tests\Feature\Api;
 
-use App\Models\Profile;
+use App\Models\Album;
 use App\User;
 use Tests\ControllerTestCase;
 
-class ProfilesTest extends ControllerTestCase
+class AlbumsTest extends ControllerTestCase
 {
     
-    private $endpoint = 'api/v1/profiles';
+    private $endpoint = 'api/v1/albums';
     
     public function setUp(): void
     {
@@ -21,9 +21,9 @@ class ProfilesTest extends ControllerTestCase
     }
 
     /** @test */
-    function user_can_view_all_profiles()
+    function user_can_view_all_albums()
     {
-        $profile = factory(Profile::class)->create([
+        $album = factory(Album::class)->create([
             'user_id' => $this->user->id
             ]);
 
@@ -33,35 +33,35 @@ class ProfilesTest extends ControllerTestCase
         // Assert
         $response->assertStatus(200);
         $response->assertJsonFragment([
-            'content' => $profile->content,
-            'user_id' => $profile->user_id
+            'title' => $album->title,
+            'user_id' => $album->user_id
         ]);
     }
 
     /** @test */
-    function user_can_view_a_single_profile()
+    function user_can_view_a_single_album()
     {
-        $profile = factory(Profile::class)->create([
+        $album = factory(Album::class)->create([
             'user_id' => $this->user->id
         ]);
 
         // Act
-        $response = $this->get("{$this->endpoint}/{$profile->id}");
+        $response = $this->get("{$this->endpoint}/{$album->id}");
 
         // Assert
         $response->assertStatus(200);
         $response->assertJsonFragment([
-            'content' => $profile->content,
-            'user_id' => $profile->user_id
+            'title' => $album->title,
+            'user_id' => $album->user_id
         ]);
     }
 
     /** @test */
-    function user_can_create_a_single_profile()
+    function user_can_create_a_single_album()
     {
         $input = [
-            'content' => 'some content',
-            'random' => 'some random'
+            'title' => 'some title',
+            'image' => 'some/random/url'
         ];
         $this->actingAs($this->artisteUser, 'api');
 
@@ -73,47 +73,47 @@ class ProfilesTest extends ControllerTestCase
         // Assert
         $response->assertStatus(201);
         $response->assertJsonFragment([
-            'content' => $input['content'],
+            'title' => $input['title'],
             'user_id' => $this->artisteUser->id
         ]);
     }
 
     /** @test */
-    function user_can_update_a_single_profile()
+    function user_can_update_a_single_album()
     {
-        $oldProfile = factory(Profile::class)->create([
+        $oldAlbum = factory(Album::class)->create([
             'user_id' => $this->artisteUser->id
         ]);
         $newInput = [
-            'content' => 'Updated test profile',
+            'title' => 'Updated test album',
         ];
         $this->actingAs($this->artisteUser, 'api');
 
         // Act
         $response = $this->withHeaders([
             'X-Requested-With' => 'XMLHttpRequest',
-        ])->json('PUT', "{$this->endpoint}/{$oldProfile->id}", $newInput);
+        ])->json('PUT', "{$this->endpoint}/{$oldAlbum->id}", $newInput);
 
         // Assert
         $response->assertStatus(200);
         $response->assertJsonFragment([
-            'content' => $newInput['content'],
-            'user_id' => $oldProfile->user_id
+            'title' => $newInput['title'],
+            'user_id' => $oldAlbum->user_id
         ]);
     }
 
     /** @test */
-    function user_can_delete_a_single_profile()
+    function user_can_delete_a_single_album()
     {
-        $profile = factory(Profile::class)->create([
+        $album = factory(Album::class)->create([
             'user_id' => $this->user->id
         ]);
-        $profileId = $profile->id;
-
-        // Act
-        $deleteResponse = $this->json('DELETE', "{$this->endpoint}/{$profileId}");
-        $getResponse = $this->get("{$this->endpoint}/{$profileId}");
+        $albumId = $album->id;
         
+        // Act
+        $deleteResponse = $this->json('DELETE', "{$this->endpoint}/{$albumId}");
+        $getResponse = $this->get("{$this->endpoint}/{$albumId}");
+
         // Assert
         $deleteResponse->assertStatus(200);
         $deleteResponse->assertJsonFragment([

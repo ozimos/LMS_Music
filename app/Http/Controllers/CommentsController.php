@@ -6,7 +6,7 @@ use App\Http\Requests\CommentCreateRequest;
 use App\Http\Requests\CommentUpdateRequest;
 use App\Contracts\Repositories\CommentRepository;
 use Illuminate\Http\JsonResponse;
-use App\Http\Resources\Comment;
+use App\Http\Resources\CommentResource;
 use App\Contracts\ResponseInterface;
 
 /**
@@ -62,11 +62,11 @@ final class CommentsController extends Controller implements ResponseInterface
 
     public function respondWithCollection($models)
     {
-        return  Comment::collection($models);
+        return  CommentResource::collection($models);
     }
 
     public function respondWithItem($model)
     {
-        return app(Comment::class, ['resource' => $model]);
+        return app(CommentResource::class, ['resource' => $model]);
     }
 }

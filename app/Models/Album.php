@@ -12,13 +12,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 final class Album extends Model 
 {
+    protected $casts = ['user_id' => 'integer'];
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['',];
+    protected $fillable = ['title', 'description', 'release_date', 'image', 'user_id', 'genre_id'];
 
     public function artiste() 
     {

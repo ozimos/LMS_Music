@@ -62,6 +62,7 @@ class UserTest extends ControllerTestCase
     {
         $this->actingAs($this->user, 'api');
         $updatedName= ['name' => 'random'];
+        
         // Act
         $response = $this->withHeaders([
             'HTTP_X-Requested-With' => 'XMLHttpRequest',

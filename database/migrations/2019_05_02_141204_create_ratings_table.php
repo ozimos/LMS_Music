@@ -19,6 +19,8 @@ class CreateRatingsTable extends Migration
             'ratings',
             function (Blueprint $table) {
                 $table->bigIncrements('id');
+                $table->integer('stars');
+                $table->text('content');
 
                 $table->timestamps();
             }

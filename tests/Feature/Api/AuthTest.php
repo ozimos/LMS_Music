@@ -19,6 +19,7 @@ class AuthTest extends ControllerTestCase
         // Act
         $response = $this->withHeaders([
             'X-Requested-With' => 'XMLHttpRequest',
+            
         ])->json('POST', "{$this->endpoint}/register", [
             'name' => $user->name,
             'email' => $user->email,

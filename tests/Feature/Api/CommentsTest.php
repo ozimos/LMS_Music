@@ -59,6 +59,7 @@ class CommentsTest extends ControllerTestCase
         $response = $this->withHeaders([
             'X-Requested-With' => 'XMLHttpRequest',
         ])->json('POST', $this->endpoint, $input);
+
         // Assert
         $response->assertStatus(201);
         $response->assertJsonFragment([
@@ -97,6 +98,7 @@ class CommentsTest extends ControllerTestCase
             'user_id' => $this->user->id
         ]);
         $commentId = $comment->id;
+        
         // Act
         $deleteResponse = $this->json('DELETE', "{$this->endpoint}/{$commentId}");
         $getResponse = $this->get("{$this->endpoint}/{$commentId}");
