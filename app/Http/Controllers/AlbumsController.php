@@ -1,12 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Gate;
 
+use App\Http\Requests\SongCreateRequest;
+use Illuminate\Http\Request;
+use App\Http\Requests\SongUpdateRequest;
 use App\Http\Requests\AlbumCreateRequest;
 use App\Http\Requests\AlbumUpdateRequest;
 use App\Contracts\Repositories\AlbumRepository;
 use Illuminate\Http\JsonResponse;
 use App\Http\Resources\AlbumResource;
+use App\Http\Resources\SongResource;
 use App\Contracts\ResponseInterface;
 
 /**
@@ -31,7 +36,8 @@ final class AlbumsController extends Controller implements ResponseInterface
     public function __construct(AlbumRepository $repository)
     {
         $this->repository = $repository;
-        $this->middleware('isArtiste')->only(['store', 'update']);
+        $this->middleware('isArtiste')->except(['index', 'destroy', 'show', 'deleteSong']);
+        $this->middleware('isArtisteOrAdmin')->only(['destroy', 'deleteSong']);
     }
 
     /**
@@ -60,6 +66,35 @@ final class AlbumsController extends Controller implements ResponseInterface
     {
         return $this->updateFromFormUpdateRequest($albumUpdateRequest, $id);
     }
+
+    public function createSong(SongCreateRequest $songCreateRequest, $albumId)
+    {
+        $album = $this->canEditModel($albumId);
+
+        $song = $this->repository->createSong($songCreateRequest->validated(), $album);
+        return app(SongResource::class, ['resource' => $song])
+            ->response()
+            ->setStatusCode(201);  
+    }  
+
+    public function updateSong(SongUpdateRequest $songUpdateRequest, $albumId, $songId)
+    {
+        $album = $this->canEditModel($albumId);
+
+        $song = $this->repository->updateSong($songUpdateRequest->validated(), $album, $songId);
+        return app(SongResource::class, ['resource' => $song]);  
+    } 
+
+    public function deleteSong(Request $formRequest, $albumId, $songId)
+    {
+        $album = $this->canEditModel($albumId, 'delete-model');
+
+        $deleted = $this->repository->deleteSong($album, $songId);
+        return response()->json([
+            'message' => 'Model deleted.',
+            'deleted' => (bool)$deleted,
+        ]); 
+    }  
 
     public function respondWithCollection($models)
     {

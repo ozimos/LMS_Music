@@ -27,8 +27,14 @@ Route::prefix('v1/auth')->name('auth.')->group(function () {
 Route::prefix('v1')->middleware('auth:api')->group(function(){
 
     Route::apiResource('users', 'UserController')->except('store');
+    Route::apiResource('songs', 'SongsController')->only(['index', 'show']);
 
     Route::middleware('addUserId')->group(function () {
+        Route::name('albums.songs.')->prefix('albums/{album}/songs')->group(function () {
+            Route::post('', 'AlbumsController@createSong')->name('create');
+            Route::put('{song}', 'AlbumsController@updateSong')->name('update');
+            Route::delete('{song}', 'AlbumsController@deleteSong')->name('delete');
+        });
         Route::apiResources([
             'comments' => 'CommentsController',
             'profiles' => 'ProfilesController',

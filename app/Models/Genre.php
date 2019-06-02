@@ -16,6 +16,6 @@ final class Genre extends Model
      *
      * @var array
      */
-    protected $fillable = [''];
+    protected $fillable = ['title', 'description'];
 
 }

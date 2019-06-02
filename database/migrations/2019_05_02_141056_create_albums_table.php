@@ -34,7 +34,8 @@ class CreateAlbumsTable extends Migration
                     ->on('genres');
                 $table->foreign('user_id')
                     ->references('id')
-                    ->on('users');
+                    ->on('users')
+                    ->onDelete('cascade');
             }
         );
     }

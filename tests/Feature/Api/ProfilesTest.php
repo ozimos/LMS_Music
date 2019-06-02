@@ -17,7 +17,11 @@ class ProfilesTest extends ControllerTestCase
         $artisteUser = factory(User::class)->create([
             'isArtiste' => true
         ]);
+        $adminUser = factory(User::class)->create([
+            'isAdmin' => true
+        ]);
         $this->artisteUser = $artisteUser;
+        $this->adminUser = $adminUser;
     }
 
     /** @test */
@@ -57,7 +61,7 @@ class ProfilesTest extends ControllerTestCase
     }
 
     /** @test */
-    function user_can_create_a_single_profile()
+    function artiste_can_create_a_single_profile()
     {
         $input = [
             'content' => 'some content',
@@ -79,7 +83,7 @@ class ProfilesTest extends ControllerTestCase
     }
 
     /** @test */
-    function user_can_update_a_single_profile()
+    function artiste_can_update_a_single_profile()
     {
         $oldProfile = factory(Profile::class)->create([
             'user_id' => $this->artisteUser->id
@@ -103,12 +107,38 @@ class ProfilesTest extends ControllerTestCase
     }
 
     /** @test */
-    function user_can_delete_a_single_profile()
+    function artiste_can_delete_a_single_profile()
     {
         $profile = factory(Profile::class)->create([
-            'user_id' => $this->user->id
+            'user_id' => $this->artisteUser->id
         ]);
         $profileId = $profile->id;
+
+        $this->actingAs($this->artisteUser, 'api');
+
+        // Act
+        $deleteResponse = $this->json('DELETE', "{$this->endpoint}/{$profileId}");
+        $getResponse = $this->get("{$this->endpoint}/{$profileId}");
+        
+        // Assert
+        $deleteResponse->assertStatus(200);
+        $deleteResponse->assertJsonFragment([
+            'message' => 'Model deleted.',
+            'deleted' => true,
+            ]);
+
+        $getResponse->assertStatus(404);
+    }
+
+    /** @test */
+    function admin_can_delete_an_artistes_single_profile()
+    {
+        $profile = factory(Profile::class)->create([
+            'user_id' => $this->artisteUser->id
+        ]);
+        $profileId = $profile->id;
+
+        $this->actingAs($this->adminUser, 'api');
 
         // Act
         $deleteResponse = $this->json('DELETE', "{$this->endpoint}/{$profileId}");

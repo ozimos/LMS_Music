@@ -12,8 +12,11 @@ $factory->define(
     Song::class, function (Faker $faker) {
         return [
         'title' => $faker->realText(12),
+        'file' => $faker->url,
         'description' => $faker->paragraph(),
         'release_date' => $faker->dateTimeThisDecade(),
+        // 'album_id' => function(){ return factory(Album::create()->id);},
+        // 'genre_id' => function(){ return factory(Genre::create()->id);}
         ];
     }
 );

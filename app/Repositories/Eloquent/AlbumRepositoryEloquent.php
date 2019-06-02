@@ -34,5 +34,21 @@ final class AlbumRepositoryEloquent extends BaseRepository implements AlbumRepos
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
+
+    public function createSong (array $data, $album)
+    {
+        return $album->songs()->create($data);
+    }
+
+    public function updateSong (array $data, $album, $id)
+    {
+        $album->songs()->where('id', $id)->update($data);
+        return $album->songs()->where('id', $id)->first();
+    }
+
+    public function deleteSong ($album, $id)
+    {
+        return $album->songs()->where('id', $id)->delete();
+    }
     
 }

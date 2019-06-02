@@ -20,9 +20,10 @@ class ProfileResource extends JsonResource
             'content' => $this->content,
             'website' => $this->website,
             'twitter' => $this->twitter,
+            'user_id' => $this->user_id,
             'facebook' => $this->facebook,
             'instagram' => $this->instagram,
-            'user_id' => $this->user_id,
+            'user' => new UserResource($this->whenLoaded('user')),
         ];
     }
 }

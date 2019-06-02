@@ -13,7 +13,7 @@ class SongCreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,11 @@ class SongCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['sometimes', 'required', 'string'],
+            'release_date' => ['sometimes', 'required', 'string', 'date', 'release_date'],
+            'genre_id' => ['integer', 'sometimes', 'required'],
+            'file' => ['string', 'required'],
         ];
     }
 }
