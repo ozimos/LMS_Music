@@ -15,8 +15,8 @@ $factory->define(
         'file' => $faker->url,
         'description' => $faker->paragraph(),
         'release_date' => $faker->dateTimeThisDecade(),
-        // 'album_id' => function(){ return factory(Album::create()->id);},
-        // 'genre_id' => function(){ return factory(Genre::create()->id);}
+        'album_id' => function(){ return factory(Album::class)->create()->id;},
+        'genre_id' => function(){ return factory(Genre::class)->create()->id;}
         ];
     }
 );
