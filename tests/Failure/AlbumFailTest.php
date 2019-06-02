@@ -39,7 +39,7 @@ class AlbumFailTest extends ControllerTestCase
         ]);
         $input = [
             'title' => 'some title',
-            'file' => 'some/random/url'
+            'description' => 'some/random/url'
         ];
         $this->actingAs($this->artisteUser, 'api');
 

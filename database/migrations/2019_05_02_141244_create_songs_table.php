@@ -23,7 +23,7 @@ class CreateSongsTable extends Migration
                 $table->string('title');
                 $table->text('description')->nullable();
                 $table->date('release_date')->nullable();
-                $table->string('file');
+                $table->string('file')->nullable();
                 
                 $table->unsignedBigInteger('album_id')->nullable();
                 $table->unsignedBigInteger('genre_id')->nullable();

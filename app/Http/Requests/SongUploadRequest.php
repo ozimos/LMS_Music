@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SongUpdateRequest extends FormRequest
+class SongUploadRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,7 @@ class SongUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['sometimes', 'required', 'string', 'max:255'],
-            'description' => ['sometimes', 'required', 'string'],
-            'release_date' => ['sometimes', 'required', 'string', 'date', 'release_date'],
-            'genre_id' => ['integer', 'sometimes', 'required'],
+            'song' => 'required|mimes:mpga,wav',
         ];
     }
 }

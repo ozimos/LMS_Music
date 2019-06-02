@@ -28,7 +28,6 @@ class SongCreateRequest extends FormRequest
             'description' => ['sometimes', 'required', 'string'],
             'release_date' => ['sometimes', 'required', 'string', 'date', 'release_date'],
             'genre_id' => ['integer', 'sometimes', 'required'],
-            'file' => ['string', 'required'],
         ];
     }
 }
