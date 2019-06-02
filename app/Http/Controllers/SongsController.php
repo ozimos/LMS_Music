@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contracts\Repositories\SongRepository;
 use App\Http\Resources\SongResource;
+use Illuminate\Support\Facades\Storage;
 use App\Contracts\ResponseInterface;
 
 /**
@@ -31,13 +32,24 @@ final class SongsController extends Controller implements ResponseInterface
         $this->middleware('isArtiste')->only(['store', 'update']);
     }
 
-    public function respondWithCollection($models)
+    public function respondWithCollection($songs)
     {
-        return  SongResource::collection($models);
+        $songs = $songs->map(function($song){
+            return $this->convertFilePathsToURL($song);
+        });
+        
+        return  SongResource::collection($songs);
     }
 
-    public function respondWithItem($model)
+    public function respondWithItem($song)
     {
-        return app(SongResource::class, ['resource' => $model]);
+        $song = $this->convertFilePathsToURL($song);
+        return app(SongResource::class, ['resource' => $song]);
+    }
+
+    protected function convertFilePathsToURL($song)
+    {
+        $song->url = Storage::url($song->file);
+        return $song;
     }
 }

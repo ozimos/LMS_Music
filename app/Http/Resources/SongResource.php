@@ -22,6 +22,7 @@ class SongResource extends JsonResource
             'album_id' => $this->album_id,
             'release_date' => $this->release_date,
             'file' => $this->file,
+            'url' => $this->url,
             'genre' => new GenreResource($this->whenLoaded('genre')),
             'album' => new AlbumResource($this->whenLoaded('album')),
         ];

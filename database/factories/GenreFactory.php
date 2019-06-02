@@ -8,8 +8,8 @@ use Faker\Generator as Faker;
 $factory->define(
     Genre::class, function (Faker $faker) {
         return [
-        'title' => $faker->realText(12),
-        'description' => $faker->paragraph(),
+            'title' => $faker->realText(12),
+            'description' => $faker->paragraph(),
         ];
     }
 );

@@ -32,7 +32,8 @@ class SongsTest extends ControllerTestCase
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'title' => $song->title,
-            'file' => $song->file
+            'file' => $song->file,
+            'url' => "/storage/{$song->file}"
         ]);
     }
 
@@ -48,7 +49,8 @@ class SongsTest extends ControllerTestCase
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'title' => $song->title,
-            'file' => $song->file
+            'file' => $song->file,
+            'url' => "/storage/{$song->file}"
         ]);
     }
 }

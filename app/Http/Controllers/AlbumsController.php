@@ -101,7 +101,7 @@ final class AlbumsController extends Controller implements ResponseInterface
     {
         $album = $this->canEditModel($albumId);
         $song = $songUploadRequest->song;
-        $path = $song->store('song');
+        $path = $song->store('public/song');
         $song = $this->repository->updateSong(['file' => $path], $album, $songId);
         return app(SongResource::class, ['resource' => $song]);  
     }

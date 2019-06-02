@@ -5,8 +5,9 @@ namespace App\Repositories\Eloquent;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Contracts\Repositories\AlbumRepository;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Album;
-use App\Validators\AlbumValidator;
+use App\Models\Song;
 
 /**
  * Class AlbumRepositoryEloquent.
@@ -48,7 +49,11 @@ final class AlbumRepositoryEloquent extends BaseRepository implements AlbumRepos
 
     public function deleteSong ($album, $id)
     {
-        return $album->songs()->where('id', $id)->delete();
+        $song = $album->songs()->where('id', $id)->first();
+        if (empty($song)){
+            return false;
+        }
+        Storage::delete($song->file);
+        return Song::destroy($song->id);
     }
-    
 }
