@@ -32,6 +32,7 @@ Route::prefix('v1')->middleware('auth:api')->group(function(){
     Route::middleware('addUserId')->group(function () {
         Route::name('albums.songs.')->prefix('albums/{album}/songs')->group(function () {
             Route::post('', 'AlbumsController@createSong')->name('create');
+            Route::post('{song}', 'AlbumsController@uploadSong')->name('upload');
             Route::put('{song}', 'AlbumsController@updateSong')->name('update');
             Route::delete('{song}', 'AlbumsController@deleteSong')->name('delete');
         });

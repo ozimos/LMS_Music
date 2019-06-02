@@ -6,6 +6,8 @@ use App\Models\Album;
 use App\Models\Song;
 use App\User;
 use Tests\ControllerTestCase;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 
 class AlbumsTest extends ControllerTestCase
 {
@@ -18,46 +20,44 @@ class AlbumsTest extends ControllerTestCase
         $artisteUser = factory(User::class)->create([
             'isArtiste' => true
         ]);
+        $this->artisteUser = $artisteUser;
         $adminUser = factory(User::class)->create([
             'isAdmin' => true
         ]);
-        $this->artisteUser = $artisteUser;
         $this->adminUser = $adminUser;
+        $album = factory(Album::class)->create([
+            'user_id' => $this->artisteUser->id
+            ]);
+        $this->album = $album;
     }
 
     /** @test */
     function user_can_view_all_albums()
     {
-        $album = factory(Album::class)->create([
-            'user_id' => $this->user->id
-            ]);
-
+       
         // Act
         $response = $this->get($this->endpoint);
 
         // Assert
         $response->assertStatus(200);
         $response->assertJsonFragment([
-            'title' => $album->title,
-            'user_id' => $album->user_id
+            'title' => $this->album->title,
+            'user_id' => $this->album->user_id
         ]);
     }
 
     /** @test */
     function user_can_view_a_single_album()
     {
-        $album = factory(Album::class)->create([
-            'user_id' => $this->user->id
-        ]);
 
         // Act
-        $response = $this->get("{$this->endpoint}/{$album->id}");
+        $response = $this->get("{$this->endpoint}/{$this->album->id}");
 
         // Assert
         $response->assertStatus(200);
         $response->assertJsonFragment([
-            'title' => $album->title,
-            'user_id' => $album->user_id
+            'title' => $this->album->title,
+            'user_id' => $this->album->user_id
         ]);
     }
 
@@ -86,13 +86,10 @@ class AlbumsTest extends ControllerTestCase
      /** @test */
      function artiste_can_create_a_single_song()
      {
-        $album = factory(Album::class)->create([
-            'user_id' => $this->artisteUser->id
-        ]);
 
          $input = [
              'title' => 'some title',
-             'file' => 'some/random/url'
+             'description' => 'some/random/url'
          ];
 
          $this->actingAs($this->artisteUser, 'api');
@@ -100,29 +97,27 @@ class AlbumsTest extends ControllerTestCase
          // Act
          $response = $this->withHeaders([
              'X-Requested-With' => 'XMLHttpRequest',
-         ])->json('POST', "{$this->endpoint}/{$album->id}/songs", $input);
+         ])->json('POST', "{$this->endpoint}/{$this->album->id}/songs", $input);
  
          // Assert
          $response->assertStatus(201);
          $response->assertJsonFragment([
              'title' => $input['title'],
-             'album_id' => $album->id
+             'album_id' => $this->album->id
          ]);
      }
 
      /** @test */
      function artiste_can_update_a_single_song()
      {
-        $album = factory(Album::class)->create([
-            'user_id' => $this->artisteUser->id
-        ]);
+
         $song = factory(Song::class)->create([
-            'album_id' => $album->id
+            'album_id' => $this->album->id
         ]);
 
          $input = [
              'title' => 'new title',
-             'file' => 'some/random/url'
+             'description' => 'some/random/url'
          ];
 
          $this->actingAs($this->artisteUser, 'api');
@@ -131,25 +126,23 @@ class AlbumsTest extends ControllerTestCase
          $response = $this->withHeaders([
              'X-Requested-With' => 'XMLHttpRequest',
             ])->json('PUT',
-                "{$this->endpoint}/{$album->id}/songs/{$song->id}", $input);
+                "{$this->endpoint}/{$this->album->id}/songs/{$song->id}", $input);
  
          // Assert
          $response->assertStatus(200);
          $response->assertJsonFragment([
              'title' => $input['title'],
-             'file' => $input['file'],
-             'album_id' => $album->id
+             'description' => $input['description'],
+             'album_id' => $this->album->id
          ]);
      }
 
      /** @test */
     function admin_can_delete_an_artistes_single_song()
      {
-        $album = factory(Album::class)->create([
-            'user_id' => $this->artisteUser->id
-        ]);
+        
         $song = factory(Song::class)->create([
-            'album_id' => $album->id
+            'album_id' => $this->album->id
         ]);
 
 
@@ -159,7 +152,7 @@ class AlbumsTest extends ControllerTestCase
          $response = $this->withHeaders([
              'X-Requested-With' => 'XMLHttpRequest',
             ])->json('DELETE',
-                "{$this->endpoint}/{$album->id}/songs/{$song->id}");
+                "{$this->endpoint}/{$this->album->id}/songs/{$song->id}");
  
          // Assert
          $response->assertStatus(200);
@@ -172,13 +165,10 @@ class AlbumsTest extends ControllerTestCase
      /** @test */
      function artiste_can_delete_a_single_song()
      {
-        $album = factory(Album::class)->create([
-            'user_id' => $this->artisteUser->id
-        ]);
+        
         $song = factory(Song::class)->create([
-            'album_id' => $album->id
+            'album_id' => $this->album->id
         ]);
-
 
          $this->actingAs($this->artisteUser, 'api');
  
@@ -186,7 +176,7 @@ class AlbumsTest extends ControllerTestCase
          $response = $this->withHeaders([
              'X-Requested-With' => 'XMLHttpRequest',
             ])->json('DELETE',
-                "{$this->endpoint}/{$album->id}/songs/{$song->id}");
+                "{$this->endpoint}/{$this->album->id}/songs/{$song->id}");
  
          // Assert
          $response->assertStatus(200);
@@ -199,9 +189,7 @@ class AlbumsTest extends ControllerTestCase
     /** @test */
     function artiste_can_update_a_single_album()
     {
-        $oldAlbum = factory(Album::class)->create([
-            'user_id' => $this->artisteUser->id
-        ]);
+        
         $newInput = [
             'title' => 'Updated test album',
         ];
@@ -210,23 +198,54 @@ class AlbumsTest extends ControllerTestCase
         // Act
         $response = $this->withHeaders([
             'X-Requested-With' => 'XMLHttpRequest',
-        ])->json('PUT', "{$this->endpoint}/{$oldAlbum->id}", $newInput);
+        ])->json('PUT', "{$this->endpoint}/{$this->album->id}", $newInput);
 
         // Assert
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'title' => $newInput['title'],
-            'user_id' => $oldAlbum->user_id
+            'user_id' => $this->album->user_id
         ]);
+    }
+
+    /** @test */
+    function artiste_can_upload_a_single_song()
+    {
+
+        $song = factory(Song::class)->create([
+            'album_id' => $this->album->id
+        ]);
+
+         $input = [
+             'song' => UploadedFile::fake()->create('test.mp3', 2),
+         ];
+
+         $this->actingAs($this->artisteUser, 'api');
+ 
+        Storage::fake('local');
+
+        // Act
+        $response = $this->json(
+                'POST', 
+                "{$this->endpoint}/{$this->album->id}/songs/{$song->id}", 
+                $input
+            );
+            
+        // Assert
+        $path = $response->json('data.file');
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' =>['album_id', 'file', 'title', 'release_date']
+            ]);
+        $this->assertNotEquals($path, $song->file);
+        Storage::disk('local')->assertExists($path);
     }
 
     /** @test */
     function artiste_can_delete_a_single_album()
     {
-        $album = factory(Album::class)->create([
-            'user_id' => $this->artisteUser->id
-        ]);
-        $albumId = $album->id;
+        
+        $albumId = $this->album->id;
 
         $this->actingAs($this->artisteUser, 'api');
         
@@ -247,10 +266,8 @@ class AlbumsTest extends ControllerTestCase
     /** @test */
     function admin_can_delete_an_artistes_single_album()
     {
-        $album = factory(Album::class)->create([
-            'user_id' => $this->artisteUser->id
-        ]);
-        $albumId = $album->id;
+        
+        $albumId = $this->album->id;
 
         $this->actingAs($this->adminUser, 'api');
         

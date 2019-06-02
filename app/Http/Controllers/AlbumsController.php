@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Gate;
 
 use App\Http\Requests\SongCreateRequest;
 use Illuminate\Http\Request;
+use App\Http\Requests\SongUploadRequest;
 use App\Http\Requests\SongUpdateRequest;
 use App\Http\Requests\AlbumCreateRequest;
 use App\Http\Requests\AlbumUpdateRequest;
@@ -85,7 +86,7 @@ final class AlbumsController extends Controller implements ResponseInterface
         return app(SongResource::class, ['resource' => $song]);  
     } 
 
-    public function deleteSong(Request $formRequest, $albumId, $songId)
+    public function deleteSong(Request $request, $albumId, $songId)
     {
         $album = $this->canEditModel($albumId, 'delete-model');
 
@@ -95,6 +96,15 @@ final class AlbumsController extends Controller implements ResponseInterface
             'deleted' => (bool)$deleted,
         ]); 
     }  
+
+    public function uploadSong(SongUploadRequest $songUploadRequest, $albumId, $songId)
+    {
+        $album = $this->canEditModel($albumId);
+        $song = $songUploadRequest->song;
+        $path = $song->store('song');
+        $song = $this->repository->updateSong(['file' => $path], $album, $songId);
+        return app(SongResource::class, ['resource' => $song]);  
+    }
 
     public function respondWithCollection($models)
     {
