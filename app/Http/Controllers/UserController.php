@@ -37,8 +37,6 @@ final class UserController extends Controller implements ResponseInterface
      */
     public function update(UserUpdateRequest $userUpdateRequest, $id)
     {
-        $withoutPassword = collect($userUpdateRequest->all())->except('password')->toArray();
-        $userUpdateRequest->replace($withoutPassword);
         return $this->updateFromFormUpdateRequest($userUpdateRequest, $id, 'pass');
     }
 
