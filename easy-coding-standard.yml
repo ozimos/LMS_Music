@@ -35,3 +35,6 @@ parameters:
             - "app/Http/Controllers/*"
         Symplify\CodingStandard\Fixer\Naming\PropertyNameMatchingTypeFixer: ~
             - "app/Http/Controllers/*"
+        Symplify\CodingStandard\Sniffs\DependencyInjection\NoClassInstantiationSniff: ~
+            - "app/Http/Requests/UserRequest"
+

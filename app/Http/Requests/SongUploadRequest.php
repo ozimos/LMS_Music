@@ -24,7 +24,7 @@ class SongUploadRequest extends FormRequest
     public function rules()
     {
         return [
-            'song' => 'required|mimes:mpga,wav',
+            'song' => 'required|file|mimes:mpga,wav',
         ];
     }
 }

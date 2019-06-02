@@ -3,6 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\OneUppercase;
+use App\Rules\OneLowercase;
+use App\Rules\OneInteger;
+use App\Rules\OneSpecialCharacter;
 
 class UserRequest extends FormRequest
 {
@@ -27,8 +31,18 @@ class UserRequest extends FormRequest
         return [
             'name' => ['sometimes', 'required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8', 'confirmed', 
+                            new OneInteger, new OneLowercase, 
+                            new OneUppercase, new OneSpecialCharacter],
             'isArtiste' => ['boolean', 'sometimes'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            "password.regex" => "Adapter Name is required!",
+            
         ];
     }
 }

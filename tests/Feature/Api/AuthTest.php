@@ -23,8 +23,8 @@ class AuthTest extends ControllerTestCase
         ])->json('POST', "{$this->endpoint}/register", [
             'name' => $user->name,
             'email' => $user->email,
-            'password' => 'test1234',
-            'password_confirmation' => 'test1234',
+            'password' => 'this_password_is_longer_than_15_characters',
+            'password_confirmation' => 'this_password_is_longer_than_15_characters',
         ]);
 
         // Assert

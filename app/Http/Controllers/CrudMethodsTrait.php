@@ -74,7 +74,7 @@ trait CrudMethodsTrait
     protected function updateFromFormUpdateRequest($formRequest, $id, $ability = 'update-model')
     {
         $model = $this->canEditModel($id, $ability);
-        $model = $this->repository->update($formRequest->all(), $id);
+        $model = $this->repository->update($formRequest->validated(), $id);
         return $this->respondWithItem($model);
     }
 
