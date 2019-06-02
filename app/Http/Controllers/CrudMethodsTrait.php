@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
 
 trait CrudMethodsTrait
@@ -70,16 +71,21 @@ trait CrudMethodsTrait
      * @return JsonResponse
      *
      */
-    protected function updateFromFormUpdateRequest($formRequest, $id, string $ability = 'update-model')
+    protected function updateFromFormUpdateRequest($formRequest, $id, $ability = 'update-model')
     {
-        $model = $this->repository->find($id);
-        if (Gate::denies($ability, $model)) {
-            return response()->json(['error' => 'UnAuthorized'], 403);
-        }
+        $model = $this->canEditModel($id, $ability);
         $model = $this->repository->update($formRequest->all(), $id);
         return $this->respondWithItem($model);
     }
 
+    protected function canEditModel($id, $ability = 'update-model')
+    {
+        $model = $this->repository->find($id);
+        if (Gate::denies($ability, $model)) {
+            throw new AuthorizationException("you do not have $ability permissions for model with id $id");
+        }
+        return $model;
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -90,17 +96,7 @@ trait CrudMethodsTrait
      */
     public function destroy($id)
     {
-        $model = $this->repository->find($id);
-
-        Gate::before(function ($user) {
-            if ($user->isAdmin) {
-                return true;
-            }
-        });
-        
-        if (Gate::denies('delete-model', $model)) {
-            return response()->json(['error' => 'UnAuthorized'], 403);
-        }
+        $this->canEditModel($id, 'delete-model');
 
         $deleted = $this->repository->delete($id);
         return response()->json([

@@ -32,6 +32,7 @@ final class ProfilesController extends Controller implements ResponseInterface
     {
         $this->repository = $repository;
         $this->middleware('isArtiste')->only(['store', 'update']);
+        $this->middleware('isArtisteOrAdmin')->only(['destroy']);
     }
 
     /**

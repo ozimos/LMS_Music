@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 class CheckIsArtiste
@@ -15,11 +16,9 @@ class CheckIsArtiste
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::user()->isArtiste) {
-            return $next($request);
+        if(!(Auth::user()->isArtiste)) {
+            throw new AuthorizationException("you are not an artiste");
         }
-        else {
-            return response()->json( ['error' => 'UnAuthorized'], 403);
-        }
+        return $next($request);
     }
 }

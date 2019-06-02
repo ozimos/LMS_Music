@@ -45,7 +45,12 @@ class ProfileFailTest extends ControllerTestCase
 
         // Assert
         $response->assertStatus(403);
-        $response->assertJsonFragment(['error' => 'UnAuthorized']);
+        $response->assertJsonFragment(
+            [
+                'error' => 
+                "you do not have update-model permissions for model with id {$oldProfile->id}"
+            ]
+        );
     }
 
     /** 
@@ -68,7 +73,12 @@ class ProfileFailTest extends ControllerTestCase
 
         // Assert
         $response->assertStatus(403);
-        $response->assertJsonFragment(['error' => 'UnAuthorized']);
+        $response->assertJsonFragment(
+            [
+                'error' => 
+                "you do not have update-model permissions for model with id {$oldProfile->id}"
+            ]
+        );
     }
 
     /** 
@@ -86,7 +96,12 @@ class ProfileFailTest extends ControllerTestCase
         $getResponse = $this->get("{$this->endpoint}/{$profileId}");
         // Assert
         $deleteResponse->assertStatus(403);
-        $deleteResponse->assertJsonFragment(['error' => 'UnAuthorized']);
+        $deleteResponse->assertJsonFragment(
+            [
+                'error' => 
+                "you do not have delete-model permissions for model with id $profileId"
+            ]
+        );
 
         $getResponse->assertStatus(200);
     }

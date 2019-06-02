@@ -5,8 +5,7 @@ namespace App\Http\Middleware;
 use Illuminate\Auth\Access\AuthorizationException;
 use Closure;
 use Illuminate\Support\Facades\Auth;
-
-class CheckIsAdminOrSelf
+class CheckIsArtisteOrAdmin
 {
     /**
      * Handle an incoming request.
@@ -17,14 +16,14 @@ class CheckIsAdminOrSelf
      */
     public function handle($request, Closure $next)
     {
-        $requestedUserId = $request->route()->parameter('user');
         $user = Auth::user();
         if(
             !($user->isAdmin ||
-            ($user->id == $requestedUserId))
-        ) {
-            throw new AuthorizationException("you do not have admin permissions or are not the oner of this resource");
-        }
-        return $next($request);
+            $user->isArtiste)
+            ) {
+                throw new AuthorizationException("you are not an artiste or an admin");
+            }
+            return $next($request);
+
     }
 }

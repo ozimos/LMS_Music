@@ -13,7 +13,6 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Resources\AlbumResource;
 use App\Http\Resources\SongResource;
 use App\Contracts\ResponseInterface;
-use Illuminate\Auth\Access\AuthorizationException;
 
 /**
  * Class AlbumsController.
@@ -37,7 +36,8 @@ final class AlbumsController extends Controller implements ResponseInterface
     public function __construct(AlbumRepository $repository)
     {
         $this->repository = $repository;
-        $this->middleware('isArtiste')->except(['index', 'destroy', 'show']);
+        $this->middleware('isArtiste')->except(['index', 'destroy', 'show', 'deleteSong']);
+        $this->middleware('isArtisteOrAdmin')->only(['destroy', 'deleteSong']);
     }
 
     /**
@@ -69,11 +69,8 @@ final class AlbumsController extends Controller implements ResponseInterface
 
     public function createSong(SongCreateRequest $songCreateRequest, $albumId)
     {
-        try {
-            $album = $this->canUpdateAlbumSongs($albumId);
-        } catch(AuthorizationException $e){
-            return response()->json(['error' => 'UnAuthorized'], 403);
-        }
+        $album = $this->canEditModel($albumId);
+
         $song = $this->repository->createSong($songCreateRequest->validated(), $album);
         return app(SongResource::class, ['resource' => $song])
             ->response()
@@ -82,11 +79,7 @@ final class AlbumsController extends Controller implements ResponseInterface
 
     public function updateSong(SongUpdateRequest $songUpdateRequest, $albumId, $songId)
     {
-        try {
-            $album = $this->canUpdateAlbumSongs($albumId);
-        } catch(AuthorizationException $e){
-            return response()->json(['error' => 'UnAuthorized'], 403);
-        }
+        $album = $this->canEditModel($albumId);
 
         $song = $this->repository->updateSong($songUpdateRequest->validated(), $album, $songId);
         return app(SongResource::class, ['resource' => $song]);  
@@ -94,17 +87,7 @@ final class AlbumsController extends Controller implements ResponseInterface
 
     public function deleteSong(Request $formRequest, $albumId, $songId)
     {
-        Gate::before(function ($user) {
-            if ($user->isAdmin) {
-                return true;
-            }
-        });
-
-        try {
-            $album = $this->canUpdateAlbumSongs($albumId);
-        } catch(AuthorizationException $e){
-            return response()->json(['error' => 'UnAuthorized'], 403);
-        }
+        $album = $this->canEditModel($albumId, 'delete-model');
 
         $deleted = $this->repository->deleteSong($album, $songId);
         return response()->json([
@@ -112,15 +95,6 @@ final class AlbumsController extends Controller implements ResponseInterface
             'deleted' => (bool)$deleted,
         ]); 
     }  
-
-    private function canUpdateAlbumSongs($albumId)
-    {
-        $album = $this->repository->find($albumId);
-        if (Gate::denies('update-model', $album)) {
-            throw new AuthorizationException();
-        }
-        return $album;
-    }
 
     public function respondWithCollection($models)
     {

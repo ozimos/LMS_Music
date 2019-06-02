@@ -64,6 +64,7 @@ class Kernel extends HttpKernel
         'isAdmin' => \App\Http\Middleware\CheckIsAdmin::class,
         'isAdminOrSelf' => \App\Http\Middleware\CheckIsAdminOrSelf::class,
         'isArtiste' => \App\Http\Middleware\CheckIsArtiste::class,
+        'isArtisteOrAdmin' => \App\Http\Middleware\CheckIsArtisteOrAdmin::class,
     ];
 
     /**

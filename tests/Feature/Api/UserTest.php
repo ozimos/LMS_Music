@@ -61,7 +61,7 @@ class UserTest extends ControllerTestCase
     function user_can_update_user_by_id()
     {
         $this->actingAs($this->user, 'api');
-        $updatedName= ['name' => 'random'];
+        $updatedName = ['name' => 'random'];
         
         // Act
         $response = $this->withHeaders([

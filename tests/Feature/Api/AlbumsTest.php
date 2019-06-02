@@ -18,7 +18,11 @@ class AlbumsTest extends ControllerTestCase
         $artisteUser = factory(User::class)->create([
             'isArtiste' => true
         ]);
+        $adminUser = factory(User::class)->create([
+            'isAdmin' => true
+        ]);
         $this->artisteUser = $artisteUser;
+        $this->adminUser = $adminUser;
     }
 
     /** @test */
@@ -58,7 +62,7 @@ class AlbumsTest extends ControllerTestCase
     }
 
     /** @test */
-    function user_can_create_a_single_album()
+    function artiste_can_create_a_single_album()
     {
         $input = [
             'title' => 'some title',
@@ -80,7 +84,7 @@ class AlbumsTest extends ControllerTestCase
     }
 
      /** @test */
-     function user_can_create_a_single_song()
+     function artiste_can_create_a_single_song()
      {
         $album = factory(Album::class)->create([
             'user_id' => $this->artisteUser->id
@@ -107,7 +111,7 @@ class AlbumsTest extends ControllerTestCase
      }
 
      /** @test */
-     function user_can_update_a_single_song()
+     function artiste_can_update_a_single_song()
      {
         $album = factory(Album::class)->create([
             'user_id' => $this->artisteUser->id
@@ -139,7 +143,34 @@ class AlbumsTest extends ControllerTestCase
      }
 
      /** @test */
-     function user_can_delete_a_single_song()
+    function admin_can_delete_an_artistes_single_song()
+     {
+        $album = factory(Album::class)->create([
+            'user_id' => $this->artisteUser->id
+        ]);
+        $song = factory(Song::class)->create([
+            'album_id' => $album->id
+        ]);
+
+
+         $this->actingAs($this->adminUser, 'api');
+ 
+         // Act
+         $response = $this->withHeaders([
+             'X-Requested-With' => 'XMLHttpRequest',
+            ])->json('DELETE',
+                "{$this->endpoint}/{$album->id}/songs/{$song->id}");
+ 
+         // Assert
+         $response->assertStatus(200);
+         $response->assertJsonFragment([
+            'message' => 'Model deleted.',
+            'deleted' => true,
+         ]);
+     }
+
+     /** @test */
+     function artiste_can_delete_a_single_song()
      {
         $album = factory(Album::class)->create([
             'user_id' => $this->artisteUser->id
@@ -166,7 +197,7 @@ class AlbumsTest extends ControllerTestCase
      }
 
     /** @test */
-    function user_can_update_a_single_album()
+    function artiste_can_update_a_single_album()
     {
         $oldAlbum = factory(Album::class)->create([
             'user_id' => $this->artisteUser->id
@@ -190,12 +221,38 @@ class AlbumsTest extends ControllerTestCase
     }
 
     /** @test */
-    function user_can_delete_a_single_album()
+    function artiste_can_delete_a_single_album()
     {
         $album = factory(Album::class)->create([
-            'user_id' => $this->user->id
+            'user_id' => $this->artisteUser->id
         ]);
         $albumId = $album->id;
+
+        $this->actingAs($this->artisteUser, 'api');
+        
+        // Act
+        $deleteResponse = $this->json('DELETE', "{$this->endpoint}/{$albumId}");
+        $getResponse = $this->get("{$this->endpoint}/{$albumId}");
+
+        // Assert
+        $deleteResponse->assertStatus(200);
+        $deleteResponse->assertJsonFragment([
+            'message' => 'Model deleted.',
+            'deleted' => true,
+            ]);
+
+        $getResponse->assertStatus(404);
+    }
+
+    /** @test */
+    function admin_can_delete_an_artistes_single_album()
+    {
+        $album = factory(Album::class)->create([
+            'user_id' => $this->artisteUser->id
+        ]);
+        $albumId = $album->id;
+
+        $this->actingAs($this->adminUser, 'api');
         
         // Act
         $deleteResponse = $this->json('DELETE', "{$this->endpoint}/{$albumId}");

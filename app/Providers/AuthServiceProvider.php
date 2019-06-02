@@ -34,5 +34,10 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('pass', function ($user, $model) {
             return true;
         });
+        Gate::before(function ($user, $ability) {
+            if ($user->isAdmin && $ability == 'delete-model') {
+                return true;
+            }
+        });
     }
 }
