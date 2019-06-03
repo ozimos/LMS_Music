@@ -22,28 +22,18 @@ This is a Music App Store API that will bring an upcoming artiste to the limelig
 * Artiste to create a profile POST /api/v1/profiles
 * Artiste to create albums POST /api/v1/albums
 * Artiste to add tracks to albums POST /api/v1/songs
-* Creation of a genre of music (blues, pop, afro)
-* Payment for a premium account
-* Generation of payment receipt in PDF format
 
 ### The Music App Store API allows the user to:
 
 * Create a sign-up profile POST /api/v1/auth/register
 * Log in POST /api/v1/auth/login
 * Log out GET /api/v1/auth/logout
-* Search or go through music genre/categories
-* Play/View the songs
-* Create a playlists
-* Favorite a song
-* Download a song
-* Subscribe to become a premium user
-* Add comments/Rating on a song
-* Recommend a song to a friend
-* Share a playlist with a friend
+* Play/View the songs /api/v1/songs
 
 ## Getting Started
 
 * [Track progress on app features with Pivotal Tracker](<https://www.pivotaltracker.com/n/projects/2342164> "Pivotal Tracker Project")
+* [Consume the API hosted on Heroku](https://cryptic-chamber-40743.herokuapp.com)
 
 ## Release
 * Version 0.1.0
