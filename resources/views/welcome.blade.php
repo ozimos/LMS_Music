@@ -14,13 +14,13 @@
 
 
     <!-- Styles -->
-      <link href="/css/app.css" rel="stylesheet" />
+      <link href="/css/app.css" type="text/css" rel="stylesheet" />
 </head>
 </head>
 
 <body class="bg-grey-lightest m-0 p-0 font-sans">
   <div id="app">
-
+    
   </div>
   <script charset="utf8" src="/js/app.js"></script>
   <script charset="utf8" src="/js/vendors~app.js"></script>
