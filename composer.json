@@ -70,6 +70,9 @@
             "vendor/bin/phpunit --prepend xdebug-filter.php"
         ],
         "test-one": ["vendor/bin/phpunit --filter"],
-        "lint" : ["vendor/bin/ecs check app --fix"]
+        "lint" : ["vendor/bin/ecs check app --fix"],
+        "compile": [
+            "php artisan migrate"
+        ]
     }
 }
