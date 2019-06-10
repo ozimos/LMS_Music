@@ -7,20 +7,19 @@ use Tests\ControllerTestCase;
 
 class UserTest extends ControllerTestCase
 {
-    
     private $endpoint = 'api/v1/users';
-    
+
     public function setUp(): void
     {
         parent::setUp();
         $adminUser = factory(User::class)->create([
-            'isAdmin' => true
+            'isAdmin' => true,
         ]);
         $this->actingAs($adminUser, 'api');
     }
-    
+
     /** @test */
-    function admin_can_get_user_list()
+    public function admin_can_get_user_list()
     {
         // Act
         $response = $this->withHeaders([
@@ -33,13 +32,13 @@ class UserTest extends ControllerTestCase
             'data' => [
                 ['id' => $this->user->id,
                 'email' => $this->user->email,
-                'name' => $this->user->name,]
-                ]
+                'name' => $this->user->name, ],
+                ],
         ]);
     }
 
     /** @test */
-    function admin_can_get_user_by_id()
+    public function admin_can_get_user_by_id()
     {
         // Act
         $response = $this->withHeaders([
@@ -53,16 +52,16 @@ class UserTest extends ControllerTestCase
                 'id' => $this->user->id,
                 'email' => $this->user->email,
                 'name' => $this->user->name,
-                ]
+                ],
         ]);
     }
 
     /** @test */
-    function user_can_update_user_by_id()
+    public function user_can_update_user_by_id()
     {
         $this->actingAs($this->user, 'api');
         $updatedName = ['name' => 'random'];
-        
+
         // Act
         $response = $this->withHeaders([
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -75,12 +74,12 @@ class UserTest extends ControllerTestCase
                 'id' => $this->user->id,
                 'email' => $this->user->email,
                 'name' => $updatedName['name'],
-                ]
+                ],
         ]);
     }
 
     /** @test */
-    function user_can_get_user_by_id()
+    public function user_can_get_user_by_id()
     {
         // Act
         $this->actingAs($this->user, 'api');
@@ -95,7 +94,7 @@ class UserTest extends ControllerTestCase
             'id' => $this->user->id,
             'email' => $this->user->email,
             'name' => $this->user->name,
-            ]
+            ],
             ]);
     }
 }

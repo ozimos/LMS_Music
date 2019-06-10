@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,18 +13,15 @@ use Illuminate\Http\Request;
 */
 
 Route::prefix('v1/auth')->name('auth.')->group(function () {
-
     Route::post('register', 'AuthController@register')->name('register');
     Route::post('login', 'AuthController@login')->name('login');
     Route::get('refresh', 'AuthController@refresh')->name('refresh');
-    Route::middleware(['auth:api', 'addUserId'])->group(function(){
+    Route::middleware(['auth:api', 'addUserId'])->group(function () {
         Route::get('user', 'AuthController@user')->name('user');
         Route::get('logout', 'AuthController@logout')->name('logout');
     });
-
 });
-Route::prefix('v1')->middleware('auth:api')->group(function(){
-
+Route::prefix('v1')->middleware('auth:api')->group(function () {
     Route::apiResource('users', 'UserController')->except('store');
     Route::apiResource('songs', 'SongsController')->only(['index', 'show']);
 
@@ -42,5 +38,4 @@ Route::prefix('v1')->middleware('auth:api')->group(function(){
             'albums'   => 'AlbumsController',
         ]);
     });
-
 });

@@ -2,21 +2,18 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Models\Payment;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Contracts\Repositories\PaymentRepository;
-use App\Models\Payment;
-use App\Validators\PaymentValidator;
 
 /**
  * Class PaymentRepositoryEloquent.
- *
- * @package namespace App\Repositories\Eloquent;
  */
 final class PaymentRepositoryEloquent extends BaseRepository implements PaymentRepository
 {
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -25,14 +22,11 @@ final class PaymentRepositoryEloquent extends BaseRepository implements PaymentR
         return Payment::class;
     }
 
-    
-
     /**
-     * Boot up the repository, pushing criteria
+     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
 }

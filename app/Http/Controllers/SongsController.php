@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Contracts\Repositories\SongRepository;
+use App\Contracts\ResponseInterface;
 use App\Http\Resources\SongResource;
 use Illuminate\Support\Facades\Storage;
-use App\Contracts\ResponseInterface;
+use App\Contracts\Repositories\SongRepository;
 
 /**
  * Class SongsController.
- *
- * @package namespace App\Http\Controllers;
  */
 final class SongsController extends Controller implements ResponseInterface
 {
@@ -34,22 +32,24 @@ final class SongsController extends Controller implements ResponseInterface
 
     public function respondWithCollection($songs)
     {
-        $songs = $songs->map(function($song){
+        $songs = $songs->map(function ($song) {
             return $this->convertFilePathsToURL($song);
         });
-        
+
         return  SongResource::collection($songs);
     }
 
     public function respondWithItem($song)
     {
         $song = $this->convertFilePathsToURL($song);
+
         return app(SongResource::class, ['resource' => $song]);
     }
 
     protected function convertFilePathsToURL($song)
     {
         $song->url = Storage::url($song->file);
+
         return $song;
     }
 }

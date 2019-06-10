@@ -25,7 +25,7 @@ class CommentUpdateRequest extends FormRequest
     {
         return [
             'user_id' => ['integer', 'sometimes', 'required'],
-            'content' => ['sometimes' ,'required', 'string']
+            'content' => ['sometimes', 'required', 'string'],
         ];
     }
 }

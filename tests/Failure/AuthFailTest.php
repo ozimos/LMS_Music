@@ -8,14 +8,13 @@ class AuthFailTest extends ControllerTestCase
 {
     private $endpoint = 'api/v1/auth';
 
-
-    /** 
+    /**
      * @test
      */
-    function user_try_to_log_in_with_wrong_credentials()
+    public function user_try_to_log_in_with_wrong_credentials()
     {
         $credentials = ['email' => 999999,
-        'password' => 'stringid'];
+        'password' => 'stringid', ];
 
         // Act
         $response = $this->json('POST', "{$this->endpoint}/login", $credentials);
@@ -23,18 +22,18 @@ class AuthFailTest extends ControllerTestCase
         $response->assertStatus(422);
         $response->assertJsonFragment([
             'errors' => [
-                'email' => ["Sorry we couldn't sign you in with those details."]
-                ]
+                'email' => ["Sorry we couldn't sign you in with those details."],
+                ],
             ]);
     }
 
-    /** 
+    /**
      * @test
      */
-    function user_try_to_register_with_field_not_validating()
+    public function user_try_to_register_with_field_not_validating()
     {
         $credentials = ['email' => 999999,
-        'password' => 999999];
+        'password' => 999999, ];
 
         // Act
         $response = $this->json('POST', "{$this->endpoint}/register", $credentials);
@@ -43,29 +42,29 @@ class AuthFailTest extends ControllerTestCase
         $response->assertJsonFragment([
             'errors' => [
                 'email' => [
-                    "The email must be a string.",
-                    "The email must be a valid email address."
+                    'The email must be a string.',
+                    'The email must be a valid email address.',
                     ],
-                "password" => [
-                    "The password confirmation does not match.",
-                    "The password must be a string.",
-                    "The password must be at least 8 characters.",
-                    "The password must contain at least one integer or be at least 15 characters long",
-                    "The password must contain at least one lowercase English letter or be at least 15 characters long",
-                    "The password must contain at least one special character or be at least 15 characters long",
-                    "The password must contain at least one uppercase English letter or be at least 15 characters long"
-                    ]
-                ]
+                'password' => [
+                    'The password confirmation does not match.',
+                    'The password must be a string.',
+                    'The password must be at least 8 characters.',
+                    'The password must contain at least one integer or be at least 15 characters long',
+                    'The password must contain at least one lowercase English letter or be at least 15 characters long',
+                    'The password must contain at least one special character or be at least 15 characters long',
+                    'The password must contain at least one uppercase English letter or be at least 15 characters long',
+                    ],
+                ],
             ]);
     }
 
-    /** 
+    /**
      * @test
      */
-    function user_try_to_register_with_field_failing_validation()
+    public function user_try_to_register_with_field_failing_validation()
     {
         $credentials = ['email' => 'assss',
-        'password' => 'stringid'];
+        'password' => 'stringid', ];
 
         // Act
         $response = $this->json('POST', "{$this->endpoint}/register", $credentials);
@@ -74,26 +73,26 @@ class AuthFailTest extends ControllerTestCase
         $response->assertJsonFragment([
             'errors' => [
                 'email' => [
-                    "The email must be a valid email address."
+                    'The email must be a valid email address.',
                     ],
-                "password" => [
-                    "The password confirmation does not match.",
-                    "The password must contain at least one integer or be at least 15 characters long",
-                    "The password must contain at least one special character or be at least 15 characters long",
-                    "The password must contain at least one uppercase English letter or be at least 15 characters long"
-                    ]
-                ]
+                'password' => [
+                    'The password confirmation does not match.',
+                    'The password must contain at least one integer or be at least 15 characters long',
+                    'The password must contain at least one special character or be at least 15 characters long',
+                    'The password must contain at least one uppercase English letter or be at least 15 characters long',
+                    ],
+                ],
             ]);
     }
 
-    /** 
+    /**
      * @test
      */
-    function user_try_to_refresh_token_with_invalid_token()
+    public function user_try_to_refresh_token_with_invalid_token()
     {
         $invalidTokenHeaders = [
-            'Authorization' => 'Bearer wrong_token', 
-            'X-Requested-With' => 'XMLHttpRequest'
+            'Authorization' => 'Bearer wrong_token',
+            'X-Requested-With' => 'XMLHttpRequest',
         ];
 
         // Act
@@ -101,7 +100,7 @@ class AuthFailTest extends ControllerTestCase
         // Assert
         $response->assertStatus(422);
         $response->assertJsonFragment([
-            'error' => 'refresh_token_error'
+            'error' => 'refresh_token_error',
             ]);
     }
 }

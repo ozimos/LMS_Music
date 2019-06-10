@@ -7,15 +7,13 @@ use Tests\ControllerTestCase;
 
 class CommentsTest extends ControllerTestCase
 {
-    
     private $endpoint = 'api/v1/comments';
-    
 
     /** @test */
-    function user_can_view_all_comments()
+    public function user_can_view_all_comments()
     {
         $comment = factory(Comment::class)->create([
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
             ]);
 
         // Act
@@ -25,15 +23,15 @@ class CommentsTest extends ControllerTestCase
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'content' => $comment->content,
-            'user_id' => $comment->user_id
+            'user_id' => $comment->user_id,
         ]);
     }
 
     /** @test */
-    function user_can_view_a_single_comment()
+    public function user_can_view_a_single_comment()
     {
         $comment = factory(Comment::class)->create([
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
         ]);
 
         // Act
@@ -43,16 +41,16 @@ class CommentsTest extends ControllerTestCase
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'content' => $comment->content,
-            'user_id' => $comment->user_id
+            'user_id' => $comment->user_id,
         ]);
     }
 
     /** @test */
-    function user_can_create_a_single_comment()
+    public function user_can_create_a_single_comment()
     {
         $input = [
             'content' => 'some content',
-            'random' => 'some random'
+            'random' => 'some random',
         ];
 
         // Act
@@ -64,15 +62,15 @@ class CommentsTest extends ControllerTestCase
         $response->assertStatus(201);
         $response->assertJsonFragment([
             'content' => $input['content'],
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
         ]);
     }
 
     /** @test */
-    function user_can_update_a_single_comment()
+    public function user_can_update_a_single_comment()
     {
         $oldComment = factory(Comment::class)->create([
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
         ]);
         $newInput = [
             'content' => 'Updated test comment',
@@ -86,19 +84,18 @@ class CommentsTest extends ControllerTestCase
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'content' => $newInput['content'],
-            'user_id' => $oldComment->user_id
+            'user_id' => $oldComment->user_id,
         ]);
-        
     }
 
     /** @test */
-    function user_can_delete_a_single_comment()
+    public function user_can_delete_a_single_comment()
     {
         $comment = factory(Comment::class)->create([
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
         ]);
         $commentId = $comment->id;
-        
+
         // Act
         $deleteResponse = $this->json('DELETE', "{$this->endpoint}/{$commentId}");
         $getResponse = $this->get("{$this->endpoint}/{$commentId}");

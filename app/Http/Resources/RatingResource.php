@@ -2,8 +2,8 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class RatingResource extends JsonResource
 {
@@ -19,7 +19,7 @@ class RatingResource extends JsonResource
             'id' => $this->id,
             'stars' => $this->stars,
             'user_id' => $this->user_id,
-            'content' => $this->content
+            'content' => $this->content,
         ];
     }
 }

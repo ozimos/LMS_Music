@@ -18,6 +18,7 @@ class AddUserId
         $user = $request->user();
         $userId = $user ? ['user_id' => $user->id] : [];
         $request->merge($userId);
+
         return $next($request);
     }
 }

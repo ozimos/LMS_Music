@@ -2,13 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\User;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Profile.
- *
- * @package namespace App\Models;
  */
 final class Profile extends Model
 {
@@ -20,7 +18,8 @@ final class Profile extends Model
      * @var array
      */
     protected $fillable = ['content', 'user_id', 'website', 'twitter', 'facebook', 'instagram'];
-    public function user() 
+
+    public function user()
     {
         return $this->belongsTo(User::class);
     }

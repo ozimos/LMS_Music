@@ -2,33 +2,32 @@
 
 namespace Tests\Feature\Api;
 
-use App\Models\Profile;
 use App\User;
+use App\Models\Profile;
 use Tests\ControllerTestCase;
 
 class ProfilesTest extends ControllerTestCase
 {
-    
     private $endpoint = 'api/v1/profiles';
-    
+
     public function setUp(): void
     {
         parent::setUp();
         $artisteUser = factory(User::class)->create([
-            'isArtiste' => true
+            'isArtiste' => true,
         ]);
         $adminUser = factory(User::class)->create([
-            'isAdmin' => true
+            'isAdmin' => true,
         ]);
         $this->artisteUser = $artisteUser;
         $this->adminUser = $adminUser;
     }
 
     /** @test */
-    function user_can_view_all_profiles()
+    public function user_can_view_all_profiles()
     {
         $profile = factory(Profile::class)->create([
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
             ]);
 
         // Act
@@ -38,15 +37,15 @@ class ProfilesTest extends ControllerTestCase
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'content' => $profile->content,
-            'user_id' => $profile->user_id
+            'user_id' => $profile->user_id,
         ]);
     }
 
     /** @test */
-    function user_can_view_a_single_profile()
+    public function user_can_view_a_single_profile()
     {
         $profile = factory(Profile::class)->create([
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
         ]);
 
         // Act
@@ -56,16 +55,16 @@ class ProfilesTest extends ControllerTestCase
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'content' => $profile->content,
-            'user_id' => $profile->user_id
+            'user_id' => $profile->user_id,
         ]);
     }
 
     /** @test */
-    function artiste_can_create_a_single_profile()
+    public function artiste_can_create_a_single_profile()
     {
         $input = [
             'content' => 'some content',
-            'random' => 'some random'
+            'random' => 'some random',
         ];
         $this->actingAs($this->artisteUser, 'api');
 
@@ -78,15 +77,15 @@ class ProfilesTest extends ControllerTestCase
         $response->assertStatus(201);
         $response->assertJsonFragment([
             'content' => $input['content'],
-            'user_id' => $this->artisteUser->id
+            'user_id' => $this->artisteUser->id,
         ]);
     }
 
     /** @test */
-    function artiste_can_update_a_single_profile()
+    public function artiste_can_update_a_single_profile()
     {
         $oldProfile = factory(Profile::class)->create([
-            'user_id' => $this->artisteUser->id
+            'user_id' => $this->artisteUser->id,
         ]);
         $newInput = [
             'content' => 'Updated test profile',
@@ -102,15 +101,15 @@ class ProfilesTest extends ControllerTestCase
         $response->assertStatus(200);
         $response->assertJsonFragment([
             'content' => $newInput['content'],
-            'user_id' => $oldProfile->user_id
+            'user_id' => $oldProfile->user_id,
         ]);
     }
 
     /** @test */
-    function artiste_can_delete_a_single_profile()
+    public function artiste_can_delete_a_single_profile()
     {
         $profile = factory(Profile::class)->create([
-            'user_id' => $this->artisteUser->id
+            'user_id' => $this->artisteUser->id,
         ]);
         $profileId = $profile->id;
 
@@ -119,7 +118,7 @@ class ProfilesTest extends ControllerTestCase
         // Act
         $deleteResponse = $this->json('DELETE', "{$this->endpoint}/{$profileId}");
         $getResponse = $this->get("{$this->endpoint}/{$profileId}");
-        
+
         // Assert
         $deleteResponse->assertStatus(200);
         $deleteResponse->assertJsonFragment([
@@ -131,10 +130,10 @@ class ProfilesTest extends ControllerTestCase
     }
 
     /** @test */
-    function admin_can_delete_an_artistes_single_profile()
+    public function admin_can_delete_an_artistes_single_profile()
     {
         $profile = factory(Profile::class)->create([
-            'user_id' => $this->artisteUser->id
+            'user_id' => $this->artisteUser->id,
         ]);
         $profileId = $profile->id;
 
@@ -143,7 +142,7 @@ class ProfilesTest extends ControllerTestCase
         // Act
         $deleteResponse = $this->json('DELETE', "{$this->endpoint}/{$profileId}");
         $getResponse = $this->get("{$this->endpoint}/{$profileId}");
-        
+
         // Assert
         $deleteResponse->assertStatus(200);
         $deleteResponse->assertJsonFragment([

@@ -6,7 +6,6 @@ use Illuminate\Contracts\Validation\Rule;
 
 final class OneLowercase implements Rule
 {
-    
     /**
      * Determine if the validation rule passes.
      *
@@ -17,6 +16,7 @@ final class OneLowercase implements Rule
     public function passes($attribute, $value)
     {
         $pattern = '/^(?=.*?[a-z]).{8,}$|.{15}/';
+
         return preg_match($pattern, $value) === 1;
     }
 

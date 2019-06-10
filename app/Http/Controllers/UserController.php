@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserUpdateRequest;
 use Illuminate\Http\JsonResponse;
-use App\Http\Resources\UserResource;
-use App\Contracts\Repositories\UserRepository;
 use App\Contracts\ResponseInterface;
+use App\Http\Resources\UserResource;
+use App\Http\Requests\UserUpdateRequest;
+use App\Contracts\Repositories\UserRepository;
 
 final class UserController extends Controller implements ResponseInterface
 {
@@ -33,7 +33,6 @@ final class UserController extends Controller implements ResponseInterface
      * @param  string            $id
      *
      * @return JsonResponse
-     *
      */
     public function update(UserUpdateRequest $userUpdateRequest, $id)
     {

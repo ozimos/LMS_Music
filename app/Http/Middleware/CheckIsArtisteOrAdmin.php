@@ -2,9 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Auth\Access\AuthorizationException;
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Access\AuthorizationException;
+
 class CheckIsArtisteOrAdmin
 {
     /**
@@ -17,13 +18,13 @@ class CheckIsArtisteOrAdmin
     public function handle($request, Closure $next)
     {
         $user = Auth::user();
-        if(
-            !($user->isAdmin ||
+        if (
+            ! ($user->isAdmin ||
             $user->isArtiste)
             ) {
-                throw new AuthorizationException("you are not an artiste or an admin");
-            }
-            return $next($request);
+            throw new AuthorizationException('you are not an artiste or an admin');
+        }
 
+        return $next($request);
     }
 }

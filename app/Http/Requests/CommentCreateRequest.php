@@ -25,7 +25,7 @@ class CommentCreateRequest extends FormRequest
     {
         return [
             'user_id' => ['integer', 'sometimes', 'required'],
-            'content' => ['required', 'string']
+            'content' => ['required', 'string'],
         ];
     }
 }

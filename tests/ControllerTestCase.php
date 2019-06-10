@@ -16,15 +16,16 @@ abstract class ControllerTestCase extends DBTestCase
     {
         parent::setUp();
         $user = User::first();
-        if (!$user) {
+        if (! $user) {
             $user = factory(User::class)->create(['name' => 'Test User']);
         }
 
         $this->actingAs($user, 'api');
         $this->user = $user;
     }
+
     /**
-     * Setup the Token Headers
+     * Setup the Token Headers.
      *
      * @param User $user
      *
@@ -34,9 +35,9 @@ abstract class ControllerTestCase extends DBTestCase
     {
         $header = [];
         $header['Accept'] = 'application/json';
-       
+
         $token = Auth::guard('api')->fromUser($user);
-        $header['Authorization'] = 'Bearer ' . $token;
+        $header['Authorization'] = 'Bearer '.$token;
 
         return $header;
     }

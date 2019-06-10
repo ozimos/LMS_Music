@@ -2,21 +2,18 @@
 
 namespace App\Repositories\Eloquent;
 
-use Prettus\Repository\Eloquent\BaseRepository;
-use Prettus\Repository\Criteria\RequestCriteria;
-use App\Contracts\Repositories\RatingRepository;
 use App\Models\Rating;
-use App\Validators\RatingValidator;
+use Prettus\Repository\Eloquent\BaseRepository;
+use App\Contracts\Repositories\RatingRepository;
+use Prettus\Repository\Criteria\RequestCriteria;
 
 /**
  * Class RatingRepositoryEloquent.
- *
- * @package namespace App\Repositories\Eloquent;
  */
 final class RatingRepositoryEloquent extends BaseRepository implements RatingRepository
 {
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -25,14 +22,11 @@ final class RatingRepositoryEloquent extends BaseRepository implements RatingRep
         return Rating::class;
     }
 
-    
-
     /**
-     * Boot up the repository, pushing criteria
+     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
 }

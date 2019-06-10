@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Auth\Access\AuthorizationException;
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class CheckIsAdminOrSelf
 {
@@ -19,12 +19,13 @@ class CheckIsAdminOrSelf
     {
         $requestedUserId = $request->route()->parameter('user');
         $user = Auth::user();
-        if(
-            !($user->isAdmin ||
+        if (
+            ! ($user->isAdmin ||
             ($user->id == $requestedUserId))
         ) {
-            throw new AuthorizationException("you do not have admin permissions or are not the oner of this resource");
+            throw new AuthorizationException('you do not have admin permissions or are not the oner of this resource');
         }
+
         return $next($request);
     }
 }

@@ -14,14 +14,14 @@ class AlbumFailTest extends ControllerTestCase
     {
         parent::setUp();
         $artisteUser = factory(User::class)->create([
-            'isArtiste' => true
+            'isArtiste' => true,
         ]);
         $anotherArtisteUser = factory(User::class)->create([
-            'isArtiste' => true
+            'isArtiste' => true,
         ]);
         $adminUser = factory(User::class)->create([
             'isAdmin' => true,
-            'isArtiste' => true
+            'isArtiste' => true,
         ]);
 
         $this->anotherArtisteUser = $anotherArtisteUser;
@@ -29,17 +29,17 @@ class AlbumFailTest extends ControllerTestCase
         $this->adminUser = $adminUser;
     }
 
-    /** 
+    /**
      * @test
      */
-    function artiste_try_to_create_not_own_album_song()
+    public function artiste_try_to_create_not_own_album_song()
     {
         $album = factory(Album::class)->create([
-            'user_id' => $this->anotherArtisteUser->id
+            'user_id' => $this->anotherArtisteUser->id,
         ]);
         $input = [
             'title' => 'some title',
-            'description' => 'some/random/url'
+            'description' => 'some/random/url',
         ];
         $this->actingAs($this->artisteUser, 'api');
 
@@ -52,8 +52,7 @@ class AlbumFailTest extends ControllerTestCase
         $response->assertStatus(403);
         $response->assertJsonFragment(
             [
-                'error' => 
-                "you do not have update-model permissions for model with id {$album->id}"
+                'error' => "you do not have update-model permissions for model with id {$album->id}",
             ]
         );
     }

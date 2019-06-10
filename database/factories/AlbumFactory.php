@@ -2,8 +2,8 @@
 
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
-use App\Models\Album;
 use App\User;
+use App\Models\Album;
 use Faker\Generator as Faker;
 
 $factory->define(
