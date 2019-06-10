@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
+use App\Contracts\ResponseInterface;
+use App\Http\Resources\CommentResource;
 use App\Http\Requests\CommentCreateRequest;
 use App\Http\Requests\CommentUpdateRequest;
 use App\Contracts\Repositories\CommentRepository;
-use Illuminate\Http\JsonResponse;
-use App\Http\Resources\CommentResource;
-use App\Contracts\ResponseInterface;
 
 /**
  * Class CommentsController.
- *
- * @package namespace App\Http\Controllers;
  */
 final class CommentsController extends Controller implements ResponseInterface
 {
@@ -39,7 +37,6 @@ final class CommentsController extends Controller implements ResponseInterface
      * @param  CommentCreateRequest $commentCreateRequest
      *
      * @return JsonResponse
-     *
      */
     public function store(CommentCreateRequest $commentCreateRequest)
     {
@@ -53,7 +50,6 @@ final class CommentsController extends Controller implements ResponseInterface
      * @param  string            $id
      *
      * @return JsonResponse
-     *
      */
     public function update(CommentUpdateRequest $commentUpdateRequest, $id)
     {

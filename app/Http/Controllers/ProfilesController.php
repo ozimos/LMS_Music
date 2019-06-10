@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
+use App\Contracts\ResponseInterface;
+use App\Http\Resources\ProfileResource;
 use App\Http\Requests\ProfileCreateRequest;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Contracts\Repositories\ProfileRepository;
-use Illuminate\Http\JsonResponse;
-use App\Http\Resources\ProfileResource;
-use App\Contracts\ResponseInterface;
 
 /**
  * Class ProfilesController.
- *
- * @package namespace App\Http\Controllers;
  */
 final class ProfilesController extends Controller implements ResponseInterface
 {
@@ -41,7 +39,6 @@ final class ProfilesController extends Controller implements ResponseInterface
      * @param  ProfileCreateRequest $profileCreateRequest
      *
      * @return JsonResponse
-     *
      */
     public function store(ProfileCreateRequest $profileCreateRequest)
     {
@@ -55,7 +52,6 @@ final class ProfilesController extends Controller implements ResponseInterface
      * @param  string            $id
      *
      * @return JsonResponse
-     *
      */
     public function update(ProfileUpdateRequest $profileUpdateRequest, $id)
     {

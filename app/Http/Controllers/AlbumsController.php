@@ -1,24 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Gate;
 
-use App\Http\Requests\SongCreateRequest;
 use Illuminate\Http\Request;
-use App\Http\Requests\SongUploadRequest;
+use Illuminate\Http\JsonResponse;
+use App\Contracts\ResponseInterface;
+use App\Http\Resources\SongResource;
+use App\Http\Resources\AlbumResource;
+use App\Http\Requests\SongCreateRequest;
 use App\Http\Requests\SongUpdateRequest;
+use App\Http\Requests\SongUploadRequest;
 use App\Http\Requests\AlbumCreateRequest;
 use App\Http\Requests\AlbumUpdateRequest;
 use App\Contracts\Repositories\AlbumRepository;
-use Illuminate\Http\JsonResponse;
-use App\Http\Resources\AlbumResource;
-use App\Http\Resources\SongResource;
-use App\Contracts\ResponseInterface;
 
 /**
  * Class AlbumsController.
- *
- * @package namespace App\Http\Controllers;
  */
 final class AlbumsController extends Controller implements ResponseInterface
 {
@@ -47,7 +44,6 @@ final class AlbumsController extends Controller implements ResponseInterface
      * @param  AlbumCreateRequest $albumCreateRequest
      *
      * @return JsonResponse
-     *
      */
     public function store(AlbumCreateRequest $albumCreateRequest)
     {
@@ -61,7 +57,6 @@ final class AlbumsController extends Controller implements ResponseInterface
      * @param  string            $id
      *
      * @return JsonResponse
-     *
      */
     public function update(AlbumUpdateRequest $albumUpdateRequest, $id)
     {
@@ -73,29 +68,32 @@ final class AlbumsController extends Controller implements ResponseInterface
         $album = $this->canEditModel($albumId);
 
         $song = $this->repository->createSong($songCreateRequest->validated(), $album);
+
         return app(SongResource::class, ['resource' => $song])
             ->response()
-            ->setStatusCode(201);  
-    }  
+            ->setStatusCode(201);
+    }
 
     public function updateSong(SongUpdateRequest $songUpdateRequest, $albumId, $songId)
     {
         $album = $this->canEditModel($albumId);
 
         $song = $this->repository->updateSong($songUpdateRequest->validated(), $album, $songId);
-        return app(SongResource::class, ['resource' => $song]);  
-    } 
+
+        return app(SongResource::class, ['resource' => $song]);
+    }
 
     public function deleteSong(Request $request, $albumId, $songId)
     {
         $album = $this->canEditModel($albumId, 'delete-model');
 
         $deleted = $this->repository->deleteSong($album, $songId);
+
         return response()->json([
             'message' => 'Model deleted.',
-            'deleted' => (bool)$deleted,
-        ]); 
-    }  
+            'deleted' => (bool) $deleted,
+        ]);
+    }
 
     public function uploadSong(SongUploadRequest $songUploadRequest, $albumId, $songId)
     {
@@ -103,7 +101,8 @@ final class AlbumsController extends Controller implements ResponseInterface
         $song = $songUploadRequest->song;
         $path = $song->store('public/song');
         $song = $this->repository->updateSong(['file' => $path], $album, $songId);
-        return app(SongResource::class, ['resource' => $song]);  
+
+        return app(SongResource::class, ['resource' => $song]);
     }
 
     public function respondWithCollection($models)

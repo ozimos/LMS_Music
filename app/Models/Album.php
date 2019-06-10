@@ -7,10 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Album.
- *
- * @package namespace App\Models;
  */
-final class Album extends Model 
+final class Album extends Model
 {
     protected $casts = ['user_id' => 'integer'];
 
@@ -21,24 +19,23 @@ final class Album extends Model
      */
     protected $fillable = ['title', 'description', 'release_date', 'image', 'user_id', 'genre_id'];
 
-    public function user() 
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function getArtisteAttribute() 
+    public function getArtisteAttribute()
     {
         return $this->user->profile;
     }
 
-    public function genre() 
+    public function genre()
     {
         return $this->belongsTo(Genre::class)
             ->withDefault();
-
     }
 
-    public function songs() 
+    public function songs()
     {
         return $this->hasMany(Song::class);
     }

@@ -6,10 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Genre.
- *
- * @package namespace App\Models;
  */
-final class Genre extends Model 
+final class Genre extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -17,5 +15,4 @@ final class Genre extends Model
      * @var array
      */
     protected $fillable = ['title', 'description'];
-
 }

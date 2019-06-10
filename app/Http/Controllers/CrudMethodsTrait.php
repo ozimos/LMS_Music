@@ -1,10 +1,11 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Auth\Access\AuthorizationException;
 
 trait CrudMethodsTrait
 {
@@ -16,6 +17,7 @@ trait CrudMethodsTrait
     public function index()
     {
         $models = $this->repository->all();
+
         return $this->respondWithCollection($models);
     }
 
@@ -25,11 +27,11 @@ trait CrudMethodsTrait
      * @param  FormRequest $formRequest
      *
      * @return JsonResponse
-     *
      */
     protected function storeFromFormCreateRequest($formRequest)
     {
         $model = $this->repository->create($formRequest->all());
+
         return $this->respondWithItem($model)->response()->setStatusCode(201);
     }
 
@@ -43,14 +45,15 @@ trait CrudMethodsTrait
     public function show($id)
     {
         $model = $this->repository->find($id);
+
         return $this->respondWithItem($model);
     }
 
     /**
      * Show the form for editing the specified resource.
-     * 
+     *
      * @codeCoverageIgnore
-     * 
+     *
      * @return JsonResponse
      */
     public function search()
@@ -59,6 +62,7 @@ trait CrudMethodsTrait
         $value = request()->query('value');
 
         $model = $this->repository->findByField($field, $value);
+
         return $this->respondWithItem($model);
     }
 
@@ -69,12 +73,12 @@ trait CrudMethodsTrait
      * @param  string            $id
      *
      * @return JsonResponse
-     *
      */
     protected function updateFromFormUpdateRequest($formRequest, $id, $ability = 'update-model')
     {
         $model = $this->canEditModel($id, $ability);
         $model = $this->repository->update($formRequest->validated(), $id);
+
         return $this->respondWithItem($model);
     }
 
@@ -84,6 +88,7 @@ trait CrudMethodsTrait
         if (Gate::denies($ability, $model)) {
             throw new AuthorizationException("you do not have $ability permissions for model with id $id");
         }
+
         return $model;
     }
 
@@ -99,6 +104,7 @@ trait CrudMethodsTrait
         $this->canEditModel($id, 'delete-model');
 
         $deleted = $this->repository->delete($id);
+
         return response()->json([
             'message' => 'Model deleted.',
             'deleted' => $deleted,
@@ -107,9 +113,9 @@ trait CrudMethodsTrait
 
     /**
      * Return the Model Name.
-     * 
+     *
      * @codeCoverageIgnore
-     * 
+     *
      * @return string
      */
     public function getModel()

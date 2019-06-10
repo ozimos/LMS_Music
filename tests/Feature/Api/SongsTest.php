@@ -2,26 +2,25 @@
 
 namespace Tests\Feature\Api;
 
-use App\Models\Song;
 use App\User;
+use App\Models\Song;
 use Tests\ControllerTestCase;
 
 class SongsTest extends ControllerTestCase
 {
-    
     private $endpoint = 'api/v1/songs';
-    
+
     public function setUp(): void
     {
         parent::setUp();
         $artisteUser = factory(User::class)->create([
-            'isArtiste' => true
+            'isArtiste' => true,
         ]);
         $this->artisteUser = $artisteUser;
     }
 
     /** @test */
-    function user_can_view_all_songs()
+    public function user_can_view_all_songs()
     {
         $song = factory(Song::class)->create();
 
@@ -33,12 +32,12 @@ class SongsTest extends ControllerTestCase
         $response->assertJsonFragment([
             'title' => $song->title,
             'file' => $song->file,
-            'url' => "/storage/{$song->file}"
+            'url' => "/storage/{$song->file}",
         ]);
     }
 
     /** @test */
-    function user_can_view_a_single_song()
+    public function user_can_view_a_single_song()
     {
         $song = factory(Song::class)->create();
 
@@ -50,7 +49,7 @@ class SongsTest extends ControllerTestCase
         $response->assertJsonFragment([
             'title' => $song->title,
             'file' => $song->file,
-            'url' => "/storage/{$song->file}"
+            'url' => "/storage/{$song->file}",
         ]);
     }
 }

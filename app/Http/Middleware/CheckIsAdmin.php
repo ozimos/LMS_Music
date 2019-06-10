@@ -3,8 +3,9 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Access\AuthorizationException;
+
 class CheckIsAdmin
 {
     /**
@@ -16,9 +17,10 @@ class CheckIsAdmin
      */
     public function handle($request, Closure $next)
     {
-        if(!(Auth::user()->isAdmin)) {
-            throw new AuthorizationException("you do not have admin permissions");
+        if (! (Auth::user()->isAdmin)) {
+            throw new AuthorizationException('you do not have admin permissions');
         }
+
         return $next($request);
     }
 }

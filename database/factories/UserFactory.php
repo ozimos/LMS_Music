@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @var \Illuminate\Database\Eloquent\Factory $factory 
+ * @var \Illuminate\Database\Eloquent\Factory
  */
 use App\User;
 use Illuminate\Support\Str;

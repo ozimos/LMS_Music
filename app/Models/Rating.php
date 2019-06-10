@@ -6,12 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Rating.
- *
- * @package namespace App\Models;
  */
 final class Rating extends Model
 {
-    
     protected $casts = ['stars' => 'integer'];
 
     /**
@@ -20,5 +17,4 @@ final class Rating extends Model
      * @var array
      */
     protected $fillable = ['stars', 'content'];
-
 }

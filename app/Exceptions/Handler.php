@@ -4,8 +4,8 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
@@ -48,15 +48,16 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if ($exception instanceof ValidationException){
+        if ($exception instanceof ValidationException) {
             return $this->convertValidationExceptionToResponse($exception, $request);
         } elseif ($exception instanceof AuthorizationException) {
             return response()->json(['error' => $exception->getMessage()], 403);
         }
+
         return parent::render($request, $exception);
     }
 
-     /**
+    /**
      * Create a response object from the given validation exception.
      *
      * @param  \Illuminate\Validation\ValidationException  $e

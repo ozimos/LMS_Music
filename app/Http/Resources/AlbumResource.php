@@ -2,8 +2,8 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class AlbumResource extends JsonResource
 {
@@ -23,7 +23,7 @@ class AlbumResource extends JsonResource
             'artiste' => new ProfileResource($this->whenLoaded('artiste')),
             'description' => $this->description,
             'release_date' => $this->release_date,
-            'image' => $this->image
+            'image' => $this->image,
         ];
     }
 }

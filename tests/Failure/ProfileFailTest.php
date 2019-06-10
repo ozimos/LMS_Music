@@ -14,24 +14,24 @@ class ProfileFailTest extends ControllerTestCase
     {
         parent::setUp();
         $artisteUser = factory(User::class)->create([
-            'isArtiste' => true
+            'isArtiste' => true,
         ]);
         $adminUser = factory(User::class)->create([
             'isAdmin' => true,
-            'isArtiste' => true
+            'isArtiste' => true,
         ]);
 
         $this->artisteUser = $artisteUser;
         $this->adminUser = $adminUser;
     }
 
-    /** 
+    /**
      * @test
      */
-    function user_try_to_update_not_own_profile()
+    public function user_try_to_update_not_own_profile()
     {
         $oldProfile = factory(Profile::class)->create([
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
         ]);
         $newInput = [
             'content' => 'Updated test profile',
@@ -47,19 +47,18 @@ class ProfileFailTest extends ControllerTestCase
         $response->assertStatus(403);
         $response->assertJsonFragment(
             [
-                'error' => 
-                "you do not have update-model permissions for model with id {$oldProfile->id}"
+                'error' => "you do not have update-model permissions for model with id {$oldProfile->id}",
             ]
         );
     }
 
-    /** 
+    /**
      * @test
      */
-    function admin_artiste_try_to_update_not_own_profile()
+    public function admin_artiste_try_to_update_not_own_profile()
     {
         $oldProfile = factory(Profile::class)->create([
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
         ]);
         $newInput = [
             'content' => 'Updated test profile',
@@ -75,19 +74,18 @@ class ProfileFailTest extends ControllerTestCase
         $response->assertStatus(403);
         $response->assertJsonFragment(
             [
-                'error' => 
-                "you do not have update-model permissions for model with id {$oldProfile->id}"
+                'error' => "you do not have update-model permissions for model with id {$oldProfile->id}",
             ]
         );
     }
 
-    /** 
+    /**
      * @test
      */
-    function user_try_to_delete_not_own_profile()
+    public function user_try_to_delete_not_own_profile()
     {
         $profile = factory(Profile::class)->create([
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
         ]);
         $profileId = $profile->id;
         $this->actingAs($this->artisteUser, 'api');
@@ -98,8 +96,7 @@ class ProfileFailTest extends ControllerTestCase
         $deleteResponse->assertStatus(403);
         $deleteResponse->assertJsonFragment(
             [
-                'error' => 
-                "you do not have delete-model permissions for model with id $profileId"
+                'error' => "you do not have delete-model permissions for model with id $profileId",
             ]
         );
 

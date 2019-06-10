@@ -3,25 +3,25 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Contracts\Support\DeferrableProvider;
+use App\Contracts\Repositories\SongRepository;
+use App\Contracts\Repositories\UserRepository;
+use App\Contracts\Repositories\AlbumRepository;
 use App\Contracts\Repositories\GenreRepository;
-use App\Repositories\Eloquent\GenreRepositoryEloquent;
-use App\Contracts\Repositories\SongRepository; 
+use App\Contracts\Repositories\RatingRepository;
+use App\Contracts\Repositories\CommentRepository;
+use App\Contracts\Repositories\PaymentRepository;
+use App\Contracts\Repositories\ProfileRepository;
+use App\Contracts\Repositories\PlaylistRepository;
+use Illuminate\Contracts\Support\DeferrableProvider;
 use App\Repositories\Eloquent\SongRepositoryEloquent;
-use App\Contracts\Repositories\AlbumRepository; 
-use App\Repositories\Eloquent\AlbumRepositoryEloquent;
-use App\Contracts\Repositories\CommentRepository; 
-use App\Repositories\Eloquent\CommentRepositoryEloquent;
-use App\Contracts\Repositories\RatingRepository; 
-use App\Repositories\Eloquent\RatingRepositoryEloquent;
-use App\Contracts\Repositories\PlaylistRepository; 
-use App\Repositories\Eloquent\PlaylistRepositoryEloquent;
-use App\Contracts\Repositories\PaymentRepository; 
-use App\Repositories\Eloquent\PaymentRepositoryEloquent;
-use App\Contracts\Repositories\UserRepository; 
 use App\Repositories\Eloquent\UserRepositoryEloquent;
-use App\Contracts\Repositories\ProfileRepository; 
+use App\Repositories\Eloquent\AlbumRepositoryEloquent;
+use App\Repositories\Eloquent\GenreRepositoryEloquent;
+use App\Repositories\Eloquent\RatingRepositoryEloquent;
+use App\Repositories\Eloquent\CommentRepositoryEloquent;
+use App\Repositories\Eloquent\PaymentRepositoryEloquent;
 use App\Repositories\Eloquent\ProfileRepositoryEloquent;
+use App\Repositories\Eloquent\PlaylistRepositoryEloquent;
 
 class RepositoryServiceProvider extends ServiceProvider implements DeferrableProvider
 {

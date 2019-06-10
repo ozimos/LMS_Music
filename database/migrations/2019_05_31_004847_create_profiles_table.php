@@ -20,7 +20,7 @@ class CreateProfilesTable extends Migration
             $table->string('twitter')->nullable();
             $table->string('facebook')->nullable();
             $table->string('instagram')->nullable();
-            
+
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
 

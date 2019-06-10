@@ -6,7 +6,6 @@ use Illuminate\Contracts\Validation\Rule;
 
 final class OneInteger implements Rule
 {
-    
     /**
      * Determine if the validation rule passes.
      *
@@ -17,6 +16,7 @@ final class OneInteger implements Rule
     public function passes($attribute, $value)
     {
         $pattern = '/^(?=.*?[0-9]).{8,}$|.{15}/';
+
         return preg_match($pattern, $value) === 1;
     }
 

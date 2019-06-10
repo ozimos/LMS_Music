@@ -1,11 +1,11 @@
 <?php
 
 namespace App;
+
 use App\Models\Profile;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -17,7 +17,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'isArtiste'
+        'name', 'email', 'password', 'isArtiste',
     ];
 
     /**
@@ -43,12 +43,13 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->getKey();
     }
-    
+
     public function getJWTCustomClaims()
     {
         return [];
     }
-    public function profile() 
+
+    public function profile()
     {
         return $this->hasOne(Profile::class)
             ->withDefault();

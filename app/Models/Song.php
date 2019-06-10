@@ -1,18 +1,17 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Song.
- *
- * @package namespace App\Models;
  */
 final class Song extends Model
 {
     protected $casts = [
         'genre_id' => 'integer',
-        'album_id' => 'integer'
+        'album_id' => 'integer',
     ];
 
     /**
@@ -21,17 +20,18 @@ final class Song extends Model
      * @var array
      */
     protected $fillable = ['title', 'description', 'release_date', 'genre_id', 'file'];
-    public function album() 
+
+    public function album()
     {
         return $this->belongsTo(Album::class);
     }
 
-    public function genre() 
+    public function genre()
     {
         return $this->belongsTo(Genre::class);
     }
 
-    public function getArtisteAttribute() 
+    public function getArtisteAttribute()
     {
         return $this->album->artiste;
     }
